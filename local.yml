@@ -16,7 +16,6 @@
       apt:
         name: "*"
         state: latest
-        changed_when: False
         when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
