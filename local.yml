@@ -12,6 +12,12 @@
         changed_when: False
         when: ansible_distribution == "Centos"
 
+    - name: re-run | update package cache if older then 3600 seconds (debian, etc)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        when: ansible_distribution in ["Debian", "Ubuntu"]
+
     - name: pre-run | update package cache (debian, etc)
       apt:
         name: "*"
