@@ -6,7 +6,7 @@
 
   pre_tasks:
 
-    - name: pre-run | update package cache (arch)
+    - name: pre-run | update package cache (centos)
       yum:
         name: '*'
         state: latest
