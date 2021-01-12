@@ -7,14 +7,9 @@
 
     - name: re-run | update package cache if older then 3600 seconds (debian, etc)
       apt:
+        upgrade: yes
         update_cache: yes
-        cache_valid_time: 3600
-        when: ansible_distribution in ["Debian", "Ubuntu"]
-
-    - name: pre-run | update package cache (debian, etc)
-      apt:
-        name: "*"
-        state: latest
+        cache_valid_time: 86400 #One day
         when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
