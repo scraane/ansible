@@ -15,11 +15,13 @@
     - name: re-run | update package cache if older then 3600 seconds (debian, etc)
       apt:
         update_cache: yes
+        force_apt_get: yes
         cache_valid_time: 3600
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: pre-run | update package cache (debian, etc)
       apt:
+        force_apt_get: yes
         name: "*"
         state: latest
       when: ansible_distribution in ["Debian", "Ubuntu"]
