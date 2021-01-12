@@ -13,10 +13,11 @@
         when: ansible_distribution == "Centos"
 
     - name: pre-run | update package cache (debian, etc)
-      tags: always
-      apt: update_cache=yes
-      changed_when: False
-      when: ansible_distribution in ["Debian", "Ubuntu"]
+      apt:
+        name: "*"
+        state: latest
+        changed_when: False
+        when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
   - name: install packages
