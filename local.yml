@@ -5,11 +5,23 @@
 
   pre_tasks:
 
+    - name: pre-run | update package cache (arch)
+      yum:
+        name: '*'
+        state: latest
+        changed_when: False
+      when: ansible_distribution == "Centos"
+
     - name: re-run | update package cache if older then 3600 seconds (debian, etc)
       apt:
-        upgrade: yes
         update_cache: yes
-        cache_valid_time: 86400 #One day
+        cache_valid_time: 3600
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: pre-run | update package cache (debian, etc)
+      apt:
+        name: "*"
+        state: latest
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
   tasks:
@@ -34,6 +46,6 @@
   - name: add ansible-pull cron job
     cron:
       name: ansible auto-provision
-      user: ansible.crron
+      user: ansible.cron
       minute: "*/10"
       job: ansible-pull -o -U https://github.com/scraane/ansible.git
