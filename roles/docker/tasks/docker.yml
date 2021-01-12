@@ -1,7 +1,6 @@
 vars_files:
 - vars/default.yml
 
-tasks:
 - name: Install aptitude using apt
   apt:
     name: aptitude
