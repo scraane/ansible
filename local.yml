@@ -7,10 +7,10 @@
 
     - name: pre-run | update package cache (arch)
         yum:
-        name: '*'
-        state: latest
-        changed_when: False
-        when: ansible_distribution == "Centos"
+          name: '*'
+          state: latest
+          changed_when: False
+          when: ansible_distribution == "Centos"
 
     - name: pre-run | update package cache (debian, etc)
         tags: always
