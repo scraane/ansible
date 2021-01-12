@@ -1,2 +1,3 @@
 - block:
   - import_tasks: locale.yml
+  - import_tasks: repositories.yml
