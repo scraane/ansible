@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+  - name: install packages
+    package:
+      name:
+        - htop
+
+  - name: add ansible user
+    user:
+      name: ansible.cron
+      system: yes
+
+  - name: set up sudo for ansible user
+    copy:
+      src: files/sudoer_ansible.cron
+      dest: /etc/sudoers.d/ansible.cron
+      owner: root
+      group: root
+      mode: 0440
+
+  - name: add ansible-pull cron job
+    cron:
+      name: ansible auto-provision
+      user: ansible.crron
+      minute: "*/10"
+      job: ansible-pull -o -U https://github.com/scraane/ansible.git
