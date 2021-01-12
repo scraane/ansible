@@ -1,5 +1,2 @@
-# Load distro-specific variables
-- tags: always
-
 - block:
   - import_tasks: locale.yml
