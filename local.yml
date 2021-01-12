@@ -1,5 +1,6 @@
 # tasks to complete before running roles
 - hosts: localhost
+  tags: always
   connection: local
   become: true
 
@@ -26,28 +27,38 @@
         state: latest
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
+    - name: pre-run | add ansible user
+      user:
+        name: ansible.cron
+        system: yes
+
+    - name: pre-run | set up sudo for ansible user
+      copy:
+        src: files/sudoer_ansible.cron
+        dest: /etc/sudoers.d/ansible.cron
+        owner: root
+        group: root
+        mode: 0440
+
+    - name: pre-run | add ansible-pull cron job
+      cron:
+        name: ansible auto-provision
+        user: ansible.cron
+        minute: "*/10"
+        job: ansible-pull -o -U https://github.com/scraane/ansible.git
+
   tasks:
   - name: install packages
     package:
       name:
         - htop
+        - wget
+        - vim
 
-  - name: add ansible user
-    user:
-      name: ansible.cron
-      system: yes
 
-  - name: set up sudo for ansible user
-    copy:
-      src: files/sudoer_ansible.cron
-      dest: /etc/sudoers.d/ansible.cron
-      owner: root
-      group: root
-      mode: 0440
 
-  - name: add ansible-pull cron job
-    cron:
-      name: ansible auto-provision
-      user: ansible.cron
-      minute: "*/10"
-      job: ansible-pull -o -U https://github.com/scraane/ansible.git
+- hosts: all
+  tags: base
+  become: true
+  roles:
+    - base
