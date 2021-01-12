@@ -5,3 +5,6 @@ debian10
 workstation1.mydomain.com
 workstation2.mydomain.com
 workstation3.mydomain.com
+
+[docker]
+debian10
