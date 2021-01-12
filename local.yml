@@ -5,20 +5,6 @@
 
   pre_tasks:
 
-    - name: install common pkg
-      apt:
-        name:
-        - htop
-        update_cache: true
-        state: present
-
-    - name: pre-run | update package cache (arch)
-      yum:
-        name: '*'
-        state: latest
-        changed_when: False
-        when: ansible_distribution == "Centos"
-
     - name: re-run | update package cache if older then 3600 seconds (debian, etc)
       apt:
         update_cache: yes
