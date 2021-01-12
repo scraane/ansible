@@ -22,6 +22,7 @@
     - name: pre-run | update package cache (debian, etc)
       apt:
         force_apt_get: yes
+        upgrade: dist
         name: "*"
         state: latest
       when: ansible_distribution in ["Debian", "Ubuntu"]
