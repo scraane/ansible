@@ -5,6 +5,13 @@
 
   pre_tasks:
 
+    - name: install common pkg
+      apt:
+        name:
+        - htop
+        update_cache: true
+        state: present
+
     - name: pre-run | update package cache (arch)
       yum:
         name: '*'
