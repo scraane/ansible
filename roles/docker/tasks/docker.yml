@@ -11,7 +11,7 @@
     state: latest
     update_cache: yes
     default_release: buster-backports
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools','python3-docker']
 
 - name: docker | add Docker GPG apt Key
   apt_key:
@@ -36,11 +36,6 @@
     name: docker-ce
     state: latest
     default_release: buster-backports
-
-- name: Install Docker Module for Python
-  pip:
-    name: docker
-    executable: pip3
 
 - name: Pull default Docker image
   docker_image:
