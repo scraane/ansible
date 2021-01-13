@@ -32,7 +32,7 @@
 - name: docker | update apt and install docker-ce
   apt:    
     update_cache: yes
-    name: dockerr-ce
+    name: docker-ce
     state: latest
     default_release: buster-backports
 
