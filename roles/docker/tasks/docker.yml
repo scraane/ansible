@@ -11,7 +11,7 @@
     state: latest
     update_cache: yes
     default_release: buster-backports
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common','virtualenv','python-pip','python-setuptools','python-docker']
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common',docker-com'virtualenv','python-pip','python-setuptools','python-docker']
 
 - name: docker | add Docker GPG apt Key
   apt_key:
@@ -43,6 +43,15 @@
     name: "scraane"
     group: "docker"
     append: yes
+
+- name: docker | create docker-data dirrectory if it does not exist
+  ansible.builtin.file:
+    path: /docker-data
+    state: directory
+    mode: '0755'
+    owner: root
+    group: docker
+
 
 - name: docker | install docker-compose
   remote_user: scraane

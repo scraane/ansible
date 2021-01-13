@@ -1,8 +1,17 @@
 {
   "ExpandedNodes": [
     "",
-    "\\files"
+    "\\roles",
+    "\\roles\\base",
+    "\\roles\\base\\tasks",
+    "\\roles\\docker",
+    "\\roles\\docker\\tasks",
+    "\\roles\\docker\\vars",
+    "\\roles\\server",
+    "\\roles\\server\\tasks",
+    "\\roles\\workstation",
+    "\\roles\\workstation\\tasks"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\roles\\docker\\vars\\default.yml",
   "PreviewInSolutionExplorer": false
 }
