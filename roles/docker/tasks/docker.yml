@@ -44,8 +44,8 @@
     group: "docker"
     append: yes
 
-- name: docker | create docker-data dirrectory if it does not exist
-  ansible.builtin.file:
+- name: docker | create docker-data directory if it does not exist
+  file:
     path: /docker-data
     state: directory
     mode: '0755'
