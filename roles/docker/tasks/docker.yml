@@ -63,6 +63,7 @@
   docker_container:
     name: "portainer-agent"
     image: "portainer/portainer-ce"
+    ports: "9001:9001"
     state: started
 
 - name: docker | copy update.sh script
