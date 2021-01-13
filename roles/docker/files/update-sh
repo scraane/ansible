@@ -1,3 +1,4 @@
+echo
 case $1 in
 	"")
 		echo "Need folder name to update! Or use ALL to update all"
@@ -32,3 +33,4 @@ case $1 in
 		fi
 		;;
 esac
+echo
