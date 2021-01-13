@@ -52,7 +52,6 @@
     owner: root
     group: docker
 
-
 - name: docker | install docker-compose
   remote_user: scraane
   get_url: 
@@ -65,3 +64,11 @@
     name: "portainer-agent"
     image: "portainer/portainer-ce"
     state: started
+
+- name: docker | copy update.sh script
+  copy:
+    src: files/update-sh
+    dest: /docker-data/update.sh mode=a+x
+    owner: root
+    group: docker
+    mode: 0755
