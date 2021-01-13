@@ -92,7 +92,8 @@
     group: docker
     mode: 0755
 
-- name: docker | download and run portainer-agent
+- name: deploy Docker Compose stack
   docker_compose:
     project_src: /docker-data/portainer-agent
-    files: docker-compose.yml
+    files:
+    - docker-compose.yml
