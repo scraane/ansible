@@ -11,7 +11,7 @@
     state: latest
     update_cache: yes
     default_release: buster-backports
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools','python3-docker','python-pip','python-setuptools','python-docker']
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common','virtualenv','python-pip','python-setuptools','python-docker']
 
 - name: docker | add Docker GPG apt Key
   apt_key:
@@ -37,27 +37,21 @@
     state: latest
     default_release: buster-backports
 
-- name: Add remote "scraane" user to "docker" group
+- name: docker | add remote "scraane" user to "docker" group
   remote_user: scraane
   user:
     name: "scraane"
     group: "docker"
     append: yes
 
-- name: Install docker-compose
+- name: docker | install docker-compose
   remote_user: scraane
   get_url: 
     url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-#- name: Pull default Docker image
-#  docker_image:
-#    name: "portainer/portainer-ce"
-#    source: pull
-
-# Creates the number of containers defined by the variable create_containers, using values from vars file
-- name: Create default containers
+- name: docker | add portainer agent
   docker_container:
     name: "portainer-agent"
     image: "portainer/portainer-ce"
