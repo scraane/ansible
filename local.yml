@@ -6,6 +6,14 @@
 
   pre_tasks:
 
+    - name: pre-run | update ansible
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+        default_release: buster-backports
+      loop: [ 'ansible']
+
     - name: pre-run | update package cache (centos)
       yum:
         name: '*'
@@ -46,7 +54,6 @@
         user: ansible.cron
         minute: "*/10"
         job: ansible-pull -o -U https://github.com/scraane/ansible.git
-
 
     - name: pre-run | install packages
       apt:
