@@ -11,7 +11,7 @@
     state: latest
     update_cache: yes
     default_release: buster-backports
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common',docker-com'virtualenv','python-pip','python-setuptools','python-docker']
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common','virtualenv','python-pip','python-setuptools','python-docker']
 
 - name: docker | add Docker GPG apt Key
   apt_key:
