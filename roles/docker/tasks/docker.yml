@@ -51,10 +51,10 @@
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-- name: Pull default Docker image
-  docker_image:
-    name: "portainer/portainer-ce"
-    source: pull
+#- name: Pull default Docker image
+#  docker_image:
+#    name: "portainer/portainer-ce"
+#    source: pull
 
 # Creates the number of containers defined by the variable create_containers, using values from vars file
 - name: Create default containers
