@@ -37,6 +37,20 @@
     state: latest
     default_release: buster-backports
 
+- name: Add remote "scraane" user to "docker" group
+  remote_user: scraane
+  user:
+    name: "scraane"
+    group: "docker"
+    append: yes
+
+- name: Install docker-compose
+  remote_user: scraane
+  get_url: 
+    url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+
 - name: Pull default Docker image
   docker_image:
     name: "portainer/portainer-ce"
