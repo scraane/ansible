@@ -59,17 +59,34 @@
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-- name: docker | add portainer agent
-  docker_container:
-    name: "portainer-agent"
-    image: "portainer/portainer-ce"
-    ports: "9001:9001"
-    state: started
+#- name: docker | add portainer agent
+#  docker_container:
+#    name: "portainer-agent"
+#    image: "portainer/portainer-ce"
+#    ports: "9001:9001"
+#    state: started
 
 - name: docker | copy update.sh script
   copy:
     src: files/update-sh
     dest: /docker-data/update.sh
+    mode: a+x
+    owner: root
+    group: docker
+    mode: 0755
+
+- name: docker | create portainer-agent directory if it does not exist
+  file:
+    path: /docker-data/portainer-agent
+    state: directory
+    mode: '0755'
+    owner: root
+    group: docker
+
+- name: docker | copy portainer-agent compose script
+  copy:
+    src: files/portaineragent.yml
+    dest: /docker-data/portainer-agent/docker-compose.yml
     mode: a+x
     owner: root
     group: docker
