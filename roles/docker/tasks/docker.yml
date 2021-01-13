@@ -92,6 +92,6 @@
     group: docker
     mode: 0755
 
-- name: docker | download and run portainer-agent
-  docker_compose:
-    project_src: /docker-data/portainer-agent
+#- name: docker | download and run portainer-agent
+#  docker_compose:
+#    project_src: /docker-data/portainer-agent
