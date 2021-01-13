@@ -1,13 +1,13 @@
 echo
 case $1 in
 	"")
-		echo "Need folder name to update! Or use ALL to update all"
+		echo "++ !Need folder name to update! Or use ALL to update all"
 		exit 0
 		;;
 	ALL|all)
 		for entry in */
 		do
-			echo "Running update on $entry:"
+			echo "++ Running update on $entry:"
 			set -x
 			cd $entry
 			docker-compose pull
@@ -19,7 +19,7 @@ case $1 in
 		;;
 	*)
 		if [ -d $1 ]; then
-			echo "Running update on $1:"
+			echo "++ Running update on $1:"
 			set -x
 			cd $1
 			docker-compose pull
@@ -28,7 +28,7 @@ case $1 in
 			cd ..
 			exit 0
 		else
-			echo "Folder $1 does not exist. Exiting!"
+			echo "++ Folder $1 does not exist. Exiting!"
 			exit 0
 		fi
 		;;
