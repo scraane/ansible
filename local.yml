@@ -47,15 +47,14 @@
         minute: "*/10"
         job: ansible-pull -o -U https://github.com/scraane/ansible.git
 
-  tasks:
-  - name: install packages
-    package:
-      name:
-        - htop
-        - wget
-        - vim
 
-
+    - name: pre-run | install packages
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop: [ 'htop', 'wget', 'curl', 'vim']  
+        
 
 - hosts: all
   tags: base
