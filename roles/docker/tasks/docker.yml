@@ -23,10 +23,18 @@
     state: present
 
 - name: docker | update apt and install docker-ce
-  apt: update_cache=yes name=containerd state=latest
+  apt:
+    update_cache: yes
+    name: containerd.io
+    state: latest
+    default_release: buster-backports
 
 - name: docker | update apt and install docker-ce
-  apt: update_cache=yes name=docker-ce state=latest
+  apt:    
+    update_cache: yes
+    name: dockerr-ce
+    state: latest
+    default_release: buster-backports
 
 - name: Install Docker Module for Python
   pip:
