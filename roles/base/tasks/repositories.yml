@@ -5,8 +5,8 @@
     filename: debian-backports
   when: ansible_distribution in ["Debian", "Ubuntu"]
 
-- name: system setup | repositories | innstalll duosecurity pgp KEY
-  rpm_key:
+- name: system setup | repositories | install duosecurity pgp KEY
+  apt_key:
     state: present
     key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
 
