@@ -24,4 +24,9 @@
             - aptitude
             - software-properties-common
         state: latest
-  when: ansible_distribution in ["Debian", "Ubuntu"]
+  when: ansible_distribution in ["Debian", "Ubuntu"]]
+
+- name: system setup | repositories |Centos
+  block:
+
+  when: ansible_distribution in ["Centos"]
