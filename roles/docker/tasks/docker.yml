@@ -59,12 +59,15 @@
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-#- name: docker | add portainer agent
-#  docker_container:
-#    name: "portainer-agent"
-#    image: "portainer/portainer-ce"
-#    ports: "9001:9001"
-#    state: started
+- name: docker | add portainer agent
+  docker_container:
+    name: "portainer-agent"
+    image: "portainer/portainer-ce"
+    ports: "9001:9001"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/volumes:/var/lib/docker/volumes"
+    state: started
 
 - name: docker | copy update.sh script
   copy:
