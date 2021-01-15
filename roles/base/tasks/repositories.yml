@@ -1,17 +1,21 @@
-- name: system setup | repositories | add ignored packages for archlinux hosts
-  tags: packages,repositories
-  lineinfile:
-      dest: /etc/pacman.conf
-      regexp: "^#?IgnorePkg"
-      line: "IgnorePkg   = ansible linux linux-headers linux-lts linux-lts-headers"
-  when: ansible_distribution == "Archlinux"
-
 - name: system setup | repositories | add debian-backports
   tags: backports,repositories
   apt_repository:
     repo: deb http://deb.debian.org/debian buster-backports main
     filename: debian-backports
-  when: ansible_distribution == "Debian"
+  when: ansible_distribution in ["Debian", "Ubuntu"]
+
+- name: system setup | repositories | add duo-security
+  tags: duosecurity,repositories
+  apt_repository:
+    repo: deb https://pkg.duosecurity.com/Debian buster main
+    filename: duosecurity
+  when: ansible_distribution in ["Debian", "Ubuntu"]
+
+- name: system setup | repositories | innstalll duosecurity pgp KEY
+  rpm_key:
+    state: present
+    key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
 
 - name: system setup | repositories | install package management tools (debian-based)
   tags: packages,system,settings
@@ -20,4 +24,4 @@
       - aptitude
       - software-properties-common
     state: latest
-  when: ansible_distribution in ["Debian", "Pop!_OS", "Ubuntu"]
+  when: ansible_distribution in ["Debian", "Ubuntu"]
