@@ -5,12 +5,3 @@ debian10
 
 [docker]
 debian10
-
-[server:vars]
-ansible_python_interpreter: /usr/bin/python3
-
-[workstation:vars]
-ansible_python_interpreter: /usr/bin/python3
-
-[docker:vars]
-ansible_python_interpreter: /usr/bin/python3
