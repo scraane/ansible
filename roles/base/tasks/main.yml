@@ -2,3 +2,5 @@
   - import_tasks: locale.yml
   - import_tasks: repositories-debian.yml
     when: ansible_distribution in ["Debian", "Ubuntu"]
+  - import_tasks: repositories-centos.yml
+    when: ansible_distribution in ["Centos"]
