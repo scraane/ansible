@@ -5,17 +5,17 @@
     filename: debian-backports
   when: ansible_distribution in ["Debian", "Ubuntu"]
 
+- name: system setup | repositories | innstalll duosecurity pgp KEY
+  rpm_key:
+    state: present
+    key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
+
 - name: system setup | repositories | add duo-security
   tags: duosecurity,repositories
   apt_repository:
     repo: deb https://pkg.duosecurity.com/Debian buster main
     filename: duosecurity
   when: ansible_distribution in ["Debian", "Ubuntu"]
-
-- name: system setup | repositories | innstalll duosecurity pgp KEY
-  rpm_key:
-    state: present
-    key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
 
 - name: system setup | repositories | install package management tools (debian-based)
   tags: packages,system,settings
