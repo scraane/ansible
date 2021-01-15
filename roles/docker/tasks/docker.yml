@@ -62,7 +62,7 @@
 - name: docker | add portainer agent
   docker_container:
     name: "portainer-agent"
-    image: "portainer/portainer-ce"
+    image: "portainer/agent"
     ports: "9001:9001"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
