@@ -1,4 +1,4 @@
-- name: system setup | repositories | debian
+- name: system setup | repositories
   block:
     - name: system setup | repositories | add debian-backports
       tags: backports,repositories
@@ -26,7 +26,9 @@
         state: latest
   when: ansible_distribution in ["Debian", "Ubuntu"]]
 
-- name: system setup | repositories |Centos
   block:
-
+    - name: system setup | repositories | add epel-release
+      yum:
+        name: epel-release
+        state: latest
   when: ansible_distribution in ["Centos"]
