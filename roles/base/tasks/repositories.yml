@@ -8,7 +8,7 @@
 - name: system setup | repositories | install duosecurity pgp KEY
   apt_key:
     state: present
-    key: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
+    url: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
 
 - name: system setup | repositories | add duo-security
   tags: duosecurity,repositories
