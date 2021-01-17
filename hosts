@@ -1,7 +1,9 @@
 [server]
 debian10
+centos7
 
 [workstation]
 
 [docker]
 debian10
+centoos7
