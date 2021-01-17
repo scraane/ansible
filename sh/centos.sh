@@ -5,7 +5,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 yum update -y
-yum install python3 python3-pip git gnupg2 -y
+yum install python3 python3-pip gnupg2 -y
+yum install git -y
 pip3 install ansible
 ansible --version
 ansible-pull -U https://github.com/scraane/ansible.git
