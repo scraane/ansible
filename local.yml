@@ -53,7 +53,14 @@
         state: latest
         update_cache: yes
       loop: [ 'htop', 'wget', 'curl', 'vim']  
-        
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+    
+    - name: pre-run | install packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop: [ 'htop', 'wget', 'curl', 'vim']  
+      when: ansible_distribution in ["Centos"]  
 
 - hosts: all
   tags: base
