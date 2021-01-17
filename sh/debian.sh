@@ -4,8 +4,8 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-sudo apt update
-sudo apt install ansible -y
-sudo ansible --version
-sudo ansible-pull -U https://github.com/scraane/ansible.git
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+apt update
+apt install ansible -y
+ansible --version
+ansible-pull -U https://github.com/scraane/ansible.git
