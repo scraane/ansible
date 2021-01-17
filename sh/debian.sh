@@ -1,11 +1,13 @@
 #!/bin/bash
+set -x
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
-echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-apt update
-apt install ansible -y
+apt update -y
+apt upgrade -y
+apt install python3 python3-pip gnupg2 -y
+apt install git -y
+pip3 install ansible
 ansible --version
 ansible-pull -U https://github.com/scraane/ansible.git

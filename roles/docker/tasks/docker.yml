@@ -115,7 +115,7 @@
 
 - name: docker | copy update.sh script
   copy:
-    src: files/update-sh
+    src: files/update.sh
     dest: /docker-data/update.sh
     mode: a+x
     owner: root
