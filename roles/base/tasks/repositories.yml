@@ -24,7 +24,7 @@
             - aptitude
             - software-properties-common
         state: latest
-  when: ansible_distribution in ["Debian", "Ubuntu"]]
+  when: ansible_distribution in ["Debian", "Ubuntu"]
 
   block:
     - name: system setup | repositories | add epel-release
