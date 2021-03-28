@@ -27,6 +27,21 @@
         state: latest
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
+    - name: pre-run | install packages
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo']  
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+    
+    - name: pre-run | install packages
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo']  
+      when: ansible_distribution in ["Centos"]  
+
     - name: pre-run | add ansible user
       user:
         name: ansible.cron
@@ -47,20 +62,6 @@
         minute: "*/10"
         job: ansible-pull -o -U https://github.com/scraane/ansible.git
 
-    - name: pre-run | install packages
-      apt:
-        name: "{{ item }}"
-        state: latest
-        update_cache: yes
-      loop: [ 'htop', 'wget', 'curl', 'vim']  
-      when: ansible_distribution in ["Debian", "Ubuntu"]
-    
-    - name: pre-run | install packages
-      yum:
-        name: "{{ item }}"
-        state: latest
-      loop: [ 'htop', 'wget', 'curl', 'vim']  
-      when: ansible_distribution in ["Centos"]  
 
 - hosts: all
   tags: base
