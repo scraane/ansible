@@ -7,11 +7,11 @@
   pre_tasks:
 
     - name: pre-run | update package cache (centos)
-      yum:
+      dnf:
         name: '*'
         state: latest
         changed_when: False
-      when: ansible_distribution == "Centos"
+      when: ansible_distribution in ["Centos", "Rocky"]
 
     - name: re-run | update package cache if older then 3600 seconds (debian, etc)
       apt:
@@ -36,11 +36,11 @@
       when: ansible_distribution in ["Debian", "Ubuntu"]
     
     - name: pre-run | install packages
-      yum:
+      dnf:
         name: "{{ item }}"
         state: latest
       loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo']  
-      when: ansible_distribution in ["Centos"]  
+      when: ansible_distribution in ["Centos", "Rocky"]  
 
     - name: pre-run | add ansible user
       user:
@@ -85,4 +85,5 @@
   tags: docker
   become: true
   roles:
+    - server
     - docker
