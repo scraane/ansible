@@ -76,7 +76,7 @@
         enabled: yes
       become: yes
 
-  when: ansible_distribution in ["Centos", "Ubuntu"]
+  when: ansible_distribution in ["Centos", "Rocky"]
 
     
 
