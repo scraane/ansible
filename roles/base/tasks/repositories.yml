@@ -31,4 +31,4 @@
       yum:
         name: epel-release
         state: latest
-  when: ansible_distribution in ["Centos"]
+  when: ansible_distribution in ["Centos", "Rocky"]
