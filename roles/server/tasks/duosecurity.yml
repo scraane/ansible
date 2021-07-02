@@ -1,5 +1,14 @@
+  vars_prompt:
+
+    - name: username
+      prompt: What is your username?
+      private: no
+
+    - name: password
+      prompt: What is your password?
+
 - name: duosecurity | install required system packages
-  apt:
+  dnf:
     name: "{{ item }}"
     state: latest
     update_cache: yes
