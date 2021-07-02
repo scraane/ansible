@@ -6,19 +6,17 @@
 
   pre_tasks:
 
-    - name: pre-run | update package cache (centos)
+    - name: pre-run | update package cache
       dnf:
         name: '*'
         state: latest
         changed_when: False
-      when: ansible_distribution in ["Centos", "Rocky"]
 
     - name: pre-run | install packages
       dnf:
         name: "{{ item }}"
         state: latest
       loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo']  
-      when: ansible_distribution in ["Centos", "Rocky"]  
 
     - name: pre-run | add ansible user
       user:

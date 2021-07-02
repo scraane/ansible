@@ -1,8 +1,6 @@
-- name: neofetch | install neofetch | debian
+- name: base | install neofetch
   block:
-    - name: neofetch | install neofetch using apt
-      apt:
+    - name: neofetch | install neofetch
+      dnf:
         name: neofetch
         state: latest
-        update_cache: yes
-        force_apt_get: yes

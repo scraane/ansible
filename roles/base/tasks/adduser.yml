@@ -1,0 +1,7 @@
+- name: base | add user
+  block:
+    - name: base | add user | scraane
+      builtin.user:
+        name: scraane
+        comment: Stephan Craane
+        group: admin

@@ -1,8 +1,7 @@
-- name: system setup | repositories
+- name: base | repositories
  
   block:
-    - name: system setup | repositories | add epel-release
+    - name: base | repositories | add epel-release
       yum:
         name: epel-release
         state: latest
-  when: ansible_distribution in ["Centos", "Rocky"]
