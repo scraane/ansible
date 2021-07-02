@@ -4,8 +4,8 @@ if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
-dnf update -y
 dnf install -y epel-release
+dnf update -y
 dnf install -y python3 python3-pip gnupg2
 dnf install -y git
 dnf install -y ansible
