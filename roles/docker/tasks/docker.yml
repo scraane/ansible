@@ -44,7 +44,6 @@
   user:
     name: "scraane"
     group: "docker"
-    append: yes
 
 - name: docker | create docker-data directory if it does not exist
   file:
