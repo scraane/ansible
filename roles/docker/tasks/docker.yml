@@ -56,8 +56,9 @@
 
 - set_fact:
     docker_compose_current_version: "{{ docker_compose_vsn.stdout | regex_search('(\\d+(\\.\\d+)+)') }}"
-  when:
-    - docker_compose_vsn.stdout is defined
+  when: >
+    docker_compose_vsn.stdout is defined
+    
 - name: docker | docker-compose | Install or upgrade docker-compose
   get_url: 
     url : "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
