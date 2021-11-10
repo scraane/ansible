@@ -6,12 +6,6 @@
 
   pre_tasks:
 
-    - name: pre-run | update package cache
-      apt:
-        name: '*'
-        state: latest
-        changed_when: False
-
     - name: pre-run | install packages
       apt:
         name: "{{ item }}"
