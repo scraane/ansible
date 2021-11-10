@@ -14,7 +14,7 @@
   pip:
     name:
         - docker-compose
-        - docker-py
+        - docker
     
 - name: docker | Add Docker GPG apt Key
   apt_key:
