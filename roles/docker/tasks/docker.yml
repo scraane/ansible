@@ -1,39 +1,6 @@
-- name: docker | install repo and docker | centos
-  block:
-    - name: docker | remove docker if installed from CentOS repo
-      yum:
-        name: "{{ item }}"
-        state: removed
-      loop: [ 'docker', 'docker-client', 'docker-client-latest', 'docker-common','docker-latest','docker-latest-logrotate','docker-logrotate','docker-engine']
-
-    - name: docker | add Docker Repository
-      get_url:
-        url: https://download.docker.com/linux/centos/docker-ce.repo
-        dest: /etc/yum.repos.d/docer-ce.repo
-      become: yes
-
-    - name: docker | enable docker repo
-      ini_file:
-        dest: /etc/yum.repos.d/docer-ce.repo
-        section: 'docker-ce-edge'
-        option: enabled
-        value: 0
-      become: yes
-
-    - name: docker | install docker-ce
-      package:
-        name: docker-ce
-        state: latest
-      become: yes
-
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
-        enabled: yes
-      become: yes
-    
-
+- name: docker | install
+  command: curl -fsSL https://get.docker.com -o get-docker.sh | bash
+  
 - name: docker | add remote "scraane" user to "docker" group
   remote_user: scraane
   user:
@@ -43,7 +10,7 @@
 
 - name: docker | create docker-data directory if it does not exist
   file:
-    path: /docker-data
+    path: /docker_data
     state: directory
     mode: '0755'
     owner: root
@@ -52,20 +19,20 @@
 - name: docker | install docker-compose
   remote_user: scraane
   get_url: 
-    url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+    url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)
     dest: /usr/local/bin/docker-compose
     mode: 'u+x,g+x'
 
-- name: docker | add portainer agent
-  docker_container:
-    name: "portainer-agent"
-    image: "portainer/agent"
-    ports: "9001:9001"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/var/lib/docker/volumes:/var/lib/docker/volumes"
-    state: started
-    container_default_behavior: no_defaults
+#- name: docker | add portainer agent
+#  docker_container:
+#    name: "portainer-agent"
+#   image: "portainer/agent"
+#    ports: "9001:9001"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#      - "/var/lib/docker/volumes:/var/lib/docker/volumes"
+#    state: started
+#    container_default_behavior: no_defaults
 
 - name: docker | copy update.sh script
   copy:
@@ -92,3 +59,9 @@
     owner: root
     group: docker
     mode: 0755
+    
+- name: docker | deploy portainer-agent
+  docker_compose:
+    project_src: /docker-data/portainer-agent/
+    files: /docker-data/portainer-agent/docker-compose.yml
+ 

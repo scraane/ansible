@@ -16,7 +16,7 @@
       dnf:
         name: "{{ item }}"
         state: latest
-      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo']  
+      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo', 'nano']  
 
     - name: pre-run | add ansible user
       user:
