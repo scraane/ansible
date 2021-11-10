@@ -7,13 +7,13 @@
   pre_tasks:
 
     - name: pre-run | update package cache
-      dnf:
+      apt:
         name: '*'
         state: latest
         changed_when: False
 
     - name: pre-run | install packages
-      dnf:
+      apt:
         name: "{{ item }}"
         state: latest
       loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo', 'nano']  
