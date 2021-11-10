@@ -1,6 +1,43 @@
-- name: docker | install
-  command: curl -fsSL https://get.docker.com -o get-docker.sh | bash
-  
+docker_apt_release_channel: stable
+docker_apt_arch: amd64
+docker_apt_repository: "deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
+docker_apt_gpg_key: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+docker_compose_version: "1.29.2"
+
+- name: docker| install dependencies
+  apt:
+    name: 
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg2
+        - software-properties-common
+    state: present
+    update_cache: no
+
+- name: docker | Add Docker GPG apt Key
+  apt_key:
+    url: "{{ docker_apt_gpg_key }}"
+    state: present
+
+- name: docker | Add Docker Repository
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    update_cache: true
+    
+- name: docker | Update apt and install docker-ce
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: false
+
+- name: docker | Run and enable docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
 - name: docker | add remote "scraane" user to "docker" group
   remote_user: scraane
   user:
@@ -16,13 +53,28 @@
     owner: root
     group: docker
 
-- name: docker | install docker-compose
-  remote_user: scraane
-  get_url: 
-    url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)
-    dest: /usr/local/bin/docker-compose
-    mode: 'u+x,g+x'
+- name: docker | docker-compose | Check current docker-compose version
+  command: docker-compose --version
+  register: docker_compose_vsn
+  changed_when: false
+  failed_when: false
+  check_mode: no
 
+- set_fact:
+    docker_compose_current_version: "{{ docker_compose_vsn.stdout | regex_search('(\\d+(\\.\\d+)+)') }}"
+  when:
+    - docker_compose_vsn.stdout is defined
+- name: docker | docker-compose | Install or upgrade docker-compose
+  get_url: 
+    url : "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: /usr/local/bin/docker-compose
+    mode: 'a+x'
+    force: yes
+  when: >
+    docker_compose_current_version is not defined
+    or docker_compose_current_version is version(docker_compose_version, '<')
+    
+    
 #- name: docker | add portainer agent
 #  docker_container:
 #    name: "portainer-agent"
