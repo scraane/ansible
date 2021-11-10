@@ -9,6 +9,13 @@
     state: present
     update_cache: no
 
+
+- name: Install bottle python package
+  pip:
+    name:
+        - docker-compose
+        - docker-py
+    
 - name: docker | Add Docker GPG apt Key
   apt_key:
     url: "{{ docker_apt_gpg_key }}"
