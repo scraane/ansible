@@ -1,6 +1,6 @@
 - name: base | install neofetch
   block:
     - name: neofetch | install neofetch
-      dnf:
+      apt:
         name: neofetch
         state: latest
