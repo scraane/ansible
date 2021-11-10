@@ -12,6 +12,3 @@ case ${ID} in
     * )                 echo "Can\'t detect OS. Please check the /etc/os-release file.'"
                         exit 1
 esac
-
-bash /tmp/$$_nutjob.sh $@
-#rm /tmp/$$_nutjob.sh
