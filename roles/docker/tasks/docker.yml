@@ -58,7 +58,8 @@
     docker_compose_current_version: "{{ docker_compose_vsn.stdout | regex_search('(\\d+(\\.\\d+)+)') }}"
   when: >
     docker_compose_vsn.stdout is defined
-    else docker_compose_current_version: "0"
+  else: >
+    docker_compose_current_version: "0"
     
 - name: docker | docker-compose | Install or upgrade docker-compose
   get_url: 
