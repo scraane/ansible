@@ -11,7 +11,7 @@
       apt:
         name: "{{ item }}"
         state: latest
-      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo', 'nano']  
+      loop: [ 'htop', 'wget', 'curl', 'vim', 'sudo', 'nano', 'neofetch', 'molly-guard']  
 
     - name: pre-run | add ansible user
       user:
