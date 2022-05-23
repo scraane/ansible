@@ -61,18 +61,6 @@
     mode: 'a+x'
     force: yes
     
-    
-#- name: docker | add portainer agent
-#  docker_container:
-#    name: "portainer-agent"
-#   image: "portainer/agent"
-#    ports: "9001:9001"
-#    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock"
-#      - "/var/lib/docker/volumes:/var/lib/docker/volumes"
-#    state: started
-#    container_default_behavior: no_defaults
-
 - name: docker | copy update.sh script
   copy:
     src: files/update.sh
@@ -103,4 +91,3 @@
   docker_compose:
     project_src: /docker_data/portainer-agent/
     files: /docker_data/portainer-agent/docker-compose.yml
- 
