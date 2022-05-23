@@ -1,4 +1,4 @@
 - block:
   - import_tasks: locale.yml
- # - import_tasks: repositories.yml
-  - import_tasks: motd.yml
+  - import_tasks: update.yml
+  - import_tasks: neofetch.yml
