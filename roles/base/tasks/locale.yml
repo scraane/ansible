@@ -22,3 +22,8 @@
     name: en_GB.UTF-8
     state: absent
   when: locale.changed
+  
+- name: base | locale | set timezone to Europe/Amsterdam
+  copy: content="Europe/Amsterdam\n" dest=/etc/timezone owner=root group=root mode=0644
+  sudo: true
+  register: timezone
