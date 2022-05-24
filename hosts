@@ -1,6 +1,7 @@
 [server]
+jackett01
 
 [workstation]
-jackett01
+
 
 [docker]
