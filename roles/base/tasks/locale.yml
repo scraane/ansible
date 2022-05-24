@@ -25,10 +25,8 @@
   
 - name: base | locale | set timezone to Europe/Amsterdam
   copy: content="Europe/Amsterdam\n" dest=/etc/timezone owner=root group=root mode=0644
-  sudo: true
   register: timezone
   
 - name: base | locale | set timezone to Europe/Amsterdam if changed
   command: dpkg-reconfigure -f noninteractive tzdata
-  sudo: true
   when: timezone.changed
