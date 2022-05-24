@@ -1,17 +1,11 @@
-- name: Update apt-get repo and cache
-    apt: 
-      update_cache: yes
-      force_apt_get: yes
-      cache_valid_time: 3600
-
-- name: Upgrade all apt packages
-    apt: upgrade=dist force_apt_get=yes
-    when: ansible_distribution in ["Debian", "Ubuntu"]
-
- - name: Check if a reboot is needed for Debian and Ubuntu boxes
-     register: reboot_required_file
-      stat: path=/var/run/reboot-required get_md5=no
-      when: ansible_distribution in ["Debian", "Ubuntu"]
+- name: base | update | update cache
+  apt:
+    update_cache: yes
+    
+- name: base | update | update packages
+  apt:
+    name: "*"
+    state: latest
 
 - name: Reboot the Debian or Ubuntu server
     reboot:
