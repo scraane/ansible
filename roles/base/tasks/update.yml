@@ -7,7 +7,7 @@
     name: "*"
     state: latest
 
- - name: Reboot box if kernel/libs updated and requested by the system
+- name: Reboot box if kernel/libs updated and requested by the system
    shell: sleep 10 && /sbin/shutdown -r now 'Rebooting box to update system libs/kernel as needed' 
    args:
      removes: /var/run/reboot-required
