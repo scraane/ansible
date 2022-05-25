@@ -7,8 +7,3 @@
   ignore_errors: true
   register: rebooting
   when: reboot_required_file.stat.exists
-  
-        
-- name: finalize | reboot | wait
-  pause: seconds=20
-  when: rebooting.changed
