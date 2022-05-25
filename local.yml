@@ -58,3 +58,9 @@
   roles:
     - server
     - docker
+    
+- hosts: all
+  tags: finalize
+  become: true
+  roles:
+    - finalize
