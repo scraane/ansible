@@ -7,10 +7,8 @@
   ignore_errors: true
   when:
     - reboot_required_file.stat.exists
+  register: rebooting
         
 - name: finalize | reboot | wait
-  wait_for_connection:
-    delay: 60
-    timeout: 300
-    when:
-    - reboot_required_file.stat.exists
+  pause: seconds=20
+  when: rebooting|changed
