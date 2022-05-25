@@ -5,9 +5,9 @@
   async: 300
   poll: 0
   ignore_errors: true
-  when:
-    - reboot_required_file.stat.exists
   register: rebooting
+  when: reboot_required_file.stat.exists
+  
         
 - name: finalize | reboot | wait
   pause: seconds=20
