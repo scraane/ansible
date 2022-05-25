@@ -1,6 +1,6 @@
 - name: base | neofetch
   block:
-    - name: neofetch | neofetch | install
+    - name: base | neofetch | install
       apt:
         name: neofetch
         state: latest
