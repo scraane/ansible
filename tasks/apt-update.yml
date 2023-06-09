@@ -7,12 +7,13 @@
       apt:
         upgrade: yes
         update_cache: yes
+    
     - name: Check that the reboot-requied exists
       stat:
         path: /var/run/reboot-required
       register: reboot_required_file
    
-    - name: Send Telegram message
+    - name: Send Telegram message when reboot is needed
       telegram:
         token: "{{ telegram_token }}"
         api_args:
@@ -20,6 +21,6 @@
           parse_mode: "markdown"
           text: "Server needs a reboot: {{ inventory_hostname }}"
           disable_web_page_preview: true
-          disable_notification: true
+          disable_notification: false
       when: reboot_required_file.stat.exists == true
    
