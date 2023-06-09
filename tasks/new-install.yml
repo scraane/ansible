@@ -31,7 +31,15 @@
         comment: "{{ newuser_comment }}"
         group: "{{ newuser_group }}"
         password: "{{ 'newuser_password' | password_hash('sha512') }}"
-
+        shell: /bin/bash
+    - name: Create the .ssh directory
+      file:
+        path: "~/.ssh"
+        state: directory
+      become: true
+      become_method: sudo
+      become_user: "{{ newuser_username }}"
+  
     - name: Set timezone to {{ newserver_tz }}
       timezone:
         name: "{{ newserver_tz }}"
