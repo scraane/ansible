@@ -24,7 +24,7 @@
           disable_notification: false
       when: reboot_required_file.stat.exists == true
 
-    - name: Sending an e-mail using Legacy SSL to the remote machine
+    - name: Sending e-mail using {{ notification_smtp_secure }} to {{ notification_smtp_host }}:{{ notification_smtp_port }}
       mail:
         host: "{{ notification_smtp_host }}"
         port: "{{ notification_smtp_port }}"
@@ -34,3 +34,4 @@
         secure: "{{ notification_smtp_secure }}"
         username: "{{ notification_smtp_username }}"
         password: "{{ notification_smtp_password }}"
+      when: reboot_required_file.stat.exists == true
