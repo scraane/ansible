@@ -15,12 +15,22 @@
    
     - name: Send Telegram message when reboot is needed
       telegram:
-        token: "{{ telegram_token }}"
+        token: "{{ notification_telegram_token }}"
         api_args:
-          chat_id: "{{ telegram_chat_id }}"
+          chat_id: "{{ notification_telegram_chat_id }}"
           parse_mode: "markdown"
           text: "Server needs a reboot: {{ inventory_hostname }}"
           disable_web_page_preview: true
           disable_notification: false
       when: reboot_required_file.stat.exists == true
-   
+
+    - name: Sending an e-mail using Legacy SSL to the remote machine
+      mail:
+        host: 192.168.2.103
+        port: 25
+        to: "{{ notification_email to }}"
+        subject: Reboot report
+        body: System {{ inventory_hostname }} needs a reboot.
+        secure: never
+        username: "{{ notification_smtp_username }}"
+        password: "{{ notification_smtp_password }}"
