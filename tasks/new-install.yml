@@ -1,0 +1,34 @@
+---
+- hosts: all
+
+  become: yes
+  tasks:
+    - name: update apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+    
+    - name: base | add user | newuser_username
+      builtin.user:
+        name: {{ newuser_username }}
+        comment: {{ newuser_comment }}
+        group: {{ newuser_group }}
+        password: "{{ 'newuser_password' | password_hash('sha512') }}"
+
+
+    - name: htop | wget | curl | sudo | neofetch
+      apt:
+        name: 
+          - htop
+          - wget
+          - curl
+          - sudo
+          - neofetch
+        state: present
+        update_cache: true
+      become: true
+  
+    - name: base | neofetch | add to motd
+      shell: echo "echo" > /etc/profile.d/mymotd.sh && echo "neofetch" >> /etc/profile.d/mymotd.sh && chmod +x /etc/profile.d/mymotd.sh
