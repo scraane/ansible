@@ -15,10 +15,10 @@
     - name: Send Telegram message
       telegram:
         token: "{{ telegram_token }}"
-        chat_id: "{{ telegram_chat_id }}"
-        parse_mode: "markdown"
-        msg: "Server needs a reboot: {{ inventory_hostname }}"
-        disable_web_page_preview: true
-        disable_notification: true
+          api_args:
+            chat_id: "{{ telegram_chat_id }}"
+            parse_mode: "markdown"
+            text: "Server needs a reboot: {{ inventory_hostname }}"
+            disable_web_page_preview: true
+            disable_notification: false
       when: reboot_required_file.stat.exists == true
-   
