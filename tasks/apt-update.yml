@@ -27,10 +27,10 @@
     - name: Sending an e-mail using Legacy SSL to the remote machine
       mail:
         host: "{{ notification_smtp_host }}"
-        port: 25
+        port: "{{ notification_smtp_port }}"
         to: "{{ notification_smtp_address }}"
         subject: Reboot report
         body: System {{ inventory_hostname }} needs a reboot.
-        secure: never
+        secure: "{{ notification_smtp_secure }}"
         username: "{{ notification_smtp_username }}"
         password: "{{ notification_smtp_password }}"
