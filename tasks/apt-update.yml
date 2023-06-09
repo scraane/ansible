@@ -10,15 +10,16 @@
     - name: Check that the reboot-requied exists
       stat:
         path: /var/run/reboot-required
-      register: p
-    - debug:
-        msg: "Reboot required"
-        telegram:
-          token: "{{ telegram_token }}"
-          api_args:
-            chat_id: "{{ telegram_chat_id }}"
-            parse_mode: "markdown"
-            text: "Your precious application has been deployed: https://example.com"
-            disable_web_page_preview: true
-            disable_notification: false
-      when: p.stat.exists
+      register: reboot_required_file
+   
+    - name: Send Telegram message
+      telegram:
+        token: "{{ telegram_token }}
+        api_args:
+          chat_id: "{{ telegram_chat_id }}"
+          parse_mode: "markdown"
+          text: "Server needs a reboot: {{ inventory_hostname }}"
+          disable_web_page_preview: true
+          disable_notification: true
+        when: reboot_required_file.stat.exists == true
+   
