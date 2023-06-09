@@ -12,9 +12,9 @@
     
     - name: base | add user | newuser_username
       builtin.user:
-        name: {{ newuser_username }}
-        comment: {{ newuser_comment }}
-        group: {{ newuser_group }}
+        name: "{{ newuser_username }}"
+        comment: r"{{ newuser_comment }}"
+        group: "{{ newuser_group }}"
         password: "{{ 'newuser_password' | password_hash('sha512') }}"
 
 
