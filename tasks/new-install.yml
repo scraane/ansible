@@ -10,8 +10,8 @@
         autoclean: yes
         autoremove: yes
     
-    - name: base | add user | newuser_username
-      builtin.user:
+    - name: base | add user | {{ newuser_username }}
+      user:
         name: "{{ newuser_username }}"
         comment: r"{{ newuser_comment }}"
         group: "{{ newuser_group }}"
