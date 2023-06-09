@@ -44,7 +44,7 @@
       ansible.posix.authorized_key:
         user: "{{ newuser_username }}"
         state: present
-        key: "{{ newuser_rsakeys_url }}"
+        key: "{{ newuser_pubkey_url }}"
   
     - name: Set timezone to {{ newserver_tz }}
       timezone:
