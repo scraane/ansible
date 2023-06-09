@@ -51,3 +51,25 @@
     - name: Set timezone to {{ newserver_tz }}
       timezone:
         name: "{{ newserver_tz }}"
+     
+    - name: Disable root SSH login
+        lineinfile:
+          path: /etc/ssh/sshd_config
+          backup: yes
+          # Line to Search/Match against
+          regexp: '{{item.From}}'
+          # Line to Replace with
+          line: '{{item.To}}'
+          state: present  
+          # To validate the Changes Before Committing/Saving
+          validate: "httpd -t -f %s"
+        with_items:
+         - { From: '^PermitRootLogin', To: 'PermitRootLogin no'}
+         - { From: '^PubkeyAuthentication', To: 'PubkeyAuthentication yes'}
+         - { From: '^PasswordAuthentication .*', To: 'PasswordAuthentication no'}
+         - { From: '^RSAAuthentication .*', To: 'RSAAuthentication yes'}
+
+     - name: Restart SSH Server
+       systemctl:
+         name: sshd
+         state: restarted
