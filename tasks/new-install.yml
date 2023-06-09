@@ -39,6 +39,12 @@
       become: true
       become_method: sudo
       become_user: "{{ newuser_username }}"
+      
+    - name: Set authorized keys taken from url
+      ansible.posix.authorized_key:
+        user: "{{ newuser_username }}"
+        state: present
+        key: "{{ newuser_rsakeys }}"
   
     - name: Set timezone to {{ newserver_tz }}
       timezone:
