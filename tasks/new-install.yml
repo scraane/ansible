@@ -30,7 +30,7 @@
         name: "{{ newuser_username }}"
         comment: "{{ newuser_comment }}"
         group: "{{ newuser_group }}"
-        password: "{{ 'newuser_password' | password_hash('sha512') }}"
+        password: "{{ newuser_password }}"
         shell: /bin/bash
         update_password: on_create
         
