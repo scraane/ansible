@@ -7,3 +7,18 @@
       apt:
         upgrade: yes
         update_cache: yes
+    - name: Check that the reboot-requied exists
+      stat:
+        path: /var/run/reboot-required
+      register: p
+    - debug:
+        msg: "Reboot required"
+        community.general.telegram:
+          token: '6117300989:AAGjCEVZwmR2dGKRjLfn0r5e2iHKezQDVjc'
+          api_args:
+            chat_id: 6186736658
+            parse_mode: "markdown"
+            text: "Your precious application has been deployed: https://example.com"
+            disable_web_page_preview: true
+            disable_notification: true
+      when: p.stat.exists
