@@ -14,7 +14,7 @@
    
     - name: Send Telegram message
       telegram:
-        token: "{{ telegram_token }}
+        token: "{{ telegram_token }}"
         api_args:
           chat_id: "{{ telegram_chat_id }}"
           parse_mode: "markdown"
