@@ -68,6 +68,6 @@
        - { From: '^RSAAuthentication .*', To: 'RSAAuthentication yes'}
 
     - name: Restart SSH Server
-      systemctl:
+      service:
         name: sshd
         state: restarted
