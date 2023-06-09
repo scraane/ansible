@@ -65,6 +65,7 @@
        - { From: '^PermitRootLogin', To: 'PermitRootLogin no'}
        - { From: '^PubkeyAuthentication', To: 'PubkeyAuthentication yes'}
        - { From: '^PasswordAuthentication .*', To: 'PasswordAuthentication no'}
+       - { From: '^AuthorizedKeysFile .*', To: 'AuthorizedKeysFile .ssh/authorized_keys'}
 
     - name: Restart SSH Server
       service:
