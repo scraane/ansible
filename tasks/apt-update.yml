@@ -28,7 +28,7 @@
       mail:
         host: "{{ notification_smtp_host }}"
         port: 25
-        to: "{{ notification_email_address }}"
+        to: "{{ notification_smtp_address }}"
         subject: Reboot report
         body: System {{ inventory_hostname }} needs a reboot.
         secure: never
