@@ -8,7 +8,7 @@
         upgrade: yes
         update_cache: yes
     
-    - name: Check that the reboot-requied exists
+    - name: Check that the reboot-required file exists
       stat:
         path: /var/run/reboot-required
       register: reboot_required_file
