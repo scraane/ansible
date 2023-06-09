@@ -20,5 +20,5 @@
         msg: "Server needs a reboot: {{ inventory_hostname }}"
         disable_web_page_preview: true
         disable_notification: true
-       when: reboot_required_file.stat.exists == true
+      when: reboot_required_file.stat.exists == true
    
