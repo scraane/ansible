@@ -67,7 +67,7 @@
        - { From: '^PasswordAuthentication .*', To: 'PasswordAuthentication no'}
        - { From: '^RSAAuthentication .*', To: 'RSAAuthentication yes'}
 
-     - name: Restart SSH Server
-       systemctl:
-         name: sshd
-         state: restarted
+    - name: Restart SSH Server
+      systemctl:
+        name: sshd
+        state: restarted
