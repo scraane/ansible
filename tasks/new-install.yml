@@ -32,6 +32,8 @@
         group: "{{ newuser_group }}"
         password: "{{ 'newuser_password' | password_hash('sha512') }}"
         shell: /bin/bash
+        update_password: on_create
+        
     - name: Create the .ssh directory
       file:
         path: "~/.ssh"
