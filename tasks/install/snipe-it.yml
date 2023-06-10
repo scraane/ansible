@@ -133,7 +133,7 @@
         group: "www-data"
         mode: '0755'
       with_items:
-        - { Location: '/var/www/snipe-it/' }
+        - { Location: '/var/www/snipe-it/storage' }
         - { Location: '/var/www/snipe-it/public/uploads' }
         - { Location: '/var/www/snipe-it/bootstrap/cache' }
         
