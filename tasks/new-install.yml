@@ -67,22 +67,8 @@
        - { From: '^#PasswordAuthentication', To: 'PasswordAuthentication no'}
        - { From: '^#AuthorizedKeysFile', To: 'AuthorizedKeysFile .ssh/authorized_keys'}
 
-    - name: Check the uptime
-      shell: uptime
-      register: UPTIME_PRE_REBOOT
+    - name: Reboot the machine
+      shell: "sleep 5 && reboot"
 
-    - debug: msg={{UPTIME_PRE_REBOOT.stdout}}
-
-    - name: Unconditionally reboot the machine with all defaults
-      reboot:
-        connect_timeout: 5
-        reboot_timeout: 600
-        pre_reboot_delay: 0
-        post_reboot_delay: 10
-        test_command: whoami
-
-    - name: Check the uptime after reboot
-      shell: uptime
-      register: UPTIME_POST_REBOOT
-
-    - debug: msg={{UPTIME_POST_REBOOT.stdout}}
+      async: 1
+      poll: 0
