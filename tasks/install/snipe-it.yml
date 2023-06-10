@@ -64,6 +64,10 @@
         single_branch: yes    
         version: master
         
+    - name: Pause for 5 seconds
+      pause:
+        seconds: 5
+    
     - name: Copy example .env file to .env
       copy:
         src: /var/www/snipe-it/.env.example
