@@ -155,8 +155,8 @@
       
     - name: Install dependecies with composer
       become: yes
-      become_user: scraane
-      community.general.composer:
+      become_user: snipeit
+      composer:
         command: install
         working_dir: /var/www/snipe-it
 
