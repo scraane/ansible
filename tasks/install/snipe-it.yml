@@ -153,6 +153,16 @@
         src: /usr/src/composer.phar
         remote_src: yes
       
+    - name: Update composer
+      become: yes
+      become_user: snipeit
+      composer:
+        command: update
+        working_dir: /var/www/snipe-it
+      environment:
+        COMPOSER_NO_INTERACTION: "1"   
+        COMPOSER_ALLOW_SUPERUSER: "1"
+
     - name: Install dependecies with composer
       become: yes
       become_user: snipeit
