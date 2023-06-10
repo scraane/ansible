@@ -36,7 +36,25 @@
         update_cache: true
       become: true
       
-    - name: Example clone of a single branch
+    - name: Remove anonymous access to mysql
+      community.mysql.mysql_user:
+        name: ''
+       host_all: true
+        state: absent
+        
+    - name: Create new databases with {{ snipeit_install_dbname }}
+      community.mysql.mysql_db:
+        name: {{ snipeit_install_dbname }}
+        state: present
+    
+    - name: Create database user with name {{ snipeit_install_dbusername }} with all database privileges
+      community.mysql.mysql_user:
+        name: "{{ snipeit_install_dbusername }}"
+        password: "{{ snipeit_install_dbpassword }}"
+        priv: '{{ snipeit_install_dbname }}.*:ALL'
+        state: present
+  
+    - name: Clone Snipe-IT Git repo
       git:
         repo: https://github.com/snipe/snipe-it
         dest: /var/www/snipe-it
@@ -93,3 +111,22 @@
         - { Location: '/var/www/snipeit/storage' }
         - { Location: '/var/www/snipeit/public/uploads' }
         - { Location: '/var/www/snipeit/bootstrap/cache' }
+        
+    - name: Install composer
+      register: ps
+      shell: "cd /var/www/snipeit && curl -sS https://getcomposer.org/installer | php"
+
+    - debug: var=ps.stdout_lines
+      
+    - name: Install dependecies with composer
+      remote_user: snipeit
+      register: ps
+      shell: "cd /var/www/snipeit && php composer.phar install --no-dev --prefer-source"
+       
+    - debug: var=ps.stdout_lines
+
+    - name: Generate APP_KEY
+      register: ps
+      shell: "cd /var/www/snipeit && php artisan key:generate"
+      
+    - debug: var=ps.stdout_lines
