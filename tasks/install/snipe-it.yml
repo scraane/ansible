@@ -75,6 +75,21 @@
        - { From: '^MAIL_REPLYTO_NAME=', To: 'MAIL_REPLYTO_NAME={{ snipeit_install_mailreplytoname }}'}
        - { From: '^MAIL_AUTO_EMBED=', To: 'MAIL_AUTO_EMBED={{ snipeit_install_mailautoembed }}'}
        - { From: '^MAIL_AUTO_EMBED_METHOD=', To: 'MAIL_AUTO_EMBED_METHOD={{ snipeit_install_mailautoembedmethof }}'}
+       - { From: '^IMAGE_LIB=', To: 'IMAGE_LIB={{ snipeit_install_imagelib }}'}
        
-
+    - name: Add snipeit user with no login and home
+      user:
+        name: "snipeit"
+        group: "apache"
+        shell: /sbin/nologin
+        create_home: no
       
+    - name: Change file ownership, group and permissions
+      file:
+        path: {{item.Location}}
+        owner: snipeit
+        mode: '0755'
+      with_items:
+        - { Location: '/var/www/snipeit/storage' }
+        - { Location: '/var/www/snipeit/public/uploads' }
+        - { Location: '/var/www/snipeit/bootstrap/cache' }
