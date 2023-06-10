@@ -63,11 +63,7 @@
         dest: /var/www/snipe-it
         single_branch: yes    
         version: master
-        
-    - name: Pause for 5 seconds
-      pause:
-        seconds: 5
-    
+
     - name: Copy example .env file to .env
       shell: "cp /var/www/snipe-it/.env.example /var/www/snipe-it/.env"
         
@@ -112,7 +108,6 @@
       file:
         path: "{{item.Location}}"
         owner: "snipeit"
-        group: "wwww-data"
         mode: '0755'
       with_items:
         - { Location: '/var/www/snipe-it/storage' }
