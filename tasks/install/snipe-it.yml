@@ -39,6 +39,11 @@
         state: present
         update_cache: true
       become: true
+      
+    - name: Add user scraane to www-data group
+      user: name=scraane
+            groups=www-data
+            append=yes
 
     - name: Make changes to apache available sites file file
       lineinfile:"/etc/apache2/sites-available/{{ item.File }}"
@@ -120,9 +125,10 @@
       file:
         path: "{{item.Location}}"
         owner: "snipeit"
+        group: "www-data"
         mode: '0755'
       with_items:
-        - { Location: '/var/www/snipe-it/storage' }
+        - { Location: '/var/www/snipe-it/' }
         - { Location: '/var/www/snipe-it/public/uploads' }
         - { Location: '/var/www/snipe-it/bootstrap/cache' }
         
