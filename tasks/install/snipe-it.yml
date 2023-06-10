@@ -133,7 +133,7 @@
     - debug: var=ps.stdout_lines
       
     - name: Install dependecies with composer
-      remote_user: snipeit
+      remote_user: scraane
       register: ps
       shell: "cd /var/www/snipe-it && php composer.phar install --no-dev --prefer-source"
        
