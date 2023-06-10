@@ -45,16 +45,21 @@
             groups=www-data
             append=yes
 
-    - name: Make changes to apache available sites file file
-      lineinfile: "/etc/apache2/sites-available/{{ item.File }}"
+    - name: Make changes to apache available sites file 000-default.conf
+      lineinfile: "/etc/apache2/sites-available/000-default.conf"
         path: 
         backup: yes
         regexp: '^DocumentRoot'
         line: 'DocumentRoot /var/www/snipe-it'
         state: present  
-      with_items:
-       - { File: '000-default.conf'}
-       - { File: 'default-ssl.conf'}
+
+    - name: Make changes to apache available sites file default-ssl.conf
+      lineinfile: "/etc/apache2/sites-available/default-ssl.conf"
+        path: 
+        backup: yes
+        regexp: '^DocumentRoot'
+        line: 'DocumentRoot /var/www/snipe-it'
+        state: present  
 
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
