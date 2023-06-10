@@ -137,11 +137,21 @@
         - { Location: '/var/www/snipe-it/public/uploads' }
         - { Location: '/var/www/snipe-it/bootstrap/cache' }
         
-    - name: Install composer
-      register: ps
-      shell: "cd /var/www/snipe-it && curl -sS https://getcomposer.org/installer | php"
+    - name: Download and install Composer
+      shell: curl -sS https://getcomposer.org/installer | php
+      args:
+        chdir: /usr/src/
+        creates: /usr/local/bin/composer
+        warn: false
 
-    - debug: var=ps.stdout_lines
+    - name: Add Composer to global path
+      copy: 
+        dest: /usr/local/bin/composer
+        group: root
+        mode: '0755'
+        owner: root
+        src: /usr/src/composer.phar
+        remote_src: yes
       
     - name: Install dependecies with composer
       remote_user: scraane
