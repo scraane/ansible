@@ -30,6 +30,7 @@
           - php-common
           - php-cli
           - php-curl
+          - php-dom
           - libapache2-mod-php
           - mariadb-server
           - mariadb-client
