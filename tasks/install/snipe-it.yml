@@ -69,9 +69,7 @@
         seconds: 5
     
     - name: Copy example .env file to .env
-      copy:
-        src: /var/www/snipe-it/.env.example
-        dest: /var/www/snipe-it/.env
+      shell: "cp /var/www/snipe-it/.env.example /var/www/snipe-it/.env"
         
     - name: Make changes to .env file
       lineinfile:
