@@ -145,10 +145,9 @@
       
     - name: Install dependecies with composer
       remote_user: scraane
-      register: ps
-      shell: "cd /var/www/snipe-it && php composer.phar install --no-dev --prefer-source"
-       
-    - debug: var=ps.stdout_lines
+      community.general.composer:
+        command: install
+        working_dir: /var/www/snipe-it
 
     - name: Generate APP_KEY
       register: ps
