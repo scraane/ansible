@@ -154,7 +154,7 @@
         remote_src: yes
       
     - name: Install dependecies with composer
-      remote_user: scraane
+      remote_user: snipeit
       community.general.composer:
         command: install
         working_dir: /var/www/snipe-it
