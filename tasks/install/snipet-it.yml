@@ -1,0 +1,80 @@
+---
+- hosts: all
+
+  become: yes
+  tasks:
+    - name: update apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+        
+    - name: Check/Install default packages
+      apt:
+        name: 
+          - htop
+          - wget
+          - curl
+          - sudo
+          - neofetch
+          - git
+        state: present
+        update_cache: true
+      become: true
+      
+    - name: Install Apache, PHP, MariaDB, imagemagick and php-imagick
+      apt:
+        name: 
+          - php-common
+          - php-cli
+          - libapache2-mod-php
+          - mariadb-server
+          - imagemagick
+          - php-imagick
+        state: present
+        update_cache: true
+      become: true
+      
+    - name: Example clone of a single branch
+      git:
+        repo: https://github.com/snipe/snipe-it
+        dest: /var/www/snipe-it
+        single_branch: yes    
+        version: master
+        
+    - name: Copy example .env file to .env
+      copy:
+        src: /var/www/snipe-it/.env.example
+        dest: /var/www/snipe-it/.env
+        
+    - name: Make changes to .env file
+      lineinfile:
+        path: /var/www/snipe-it/.env
+        backup: no
+        regexp: '{{item.From}}'
+        line: '{{item.To}}'
+        state: present  
+      with_items:
+       - { From: '^APP_ENV=', To: 'APP_ENV=production'}
+       - { From: '^APP_URL=', To: 'APP_URL={{ snipeit_install_appurl }}'}
+       - { From: '^DB_CONNECTION=', To: 'DB_CONNECTION=mysql'}
+       - { From: '^DB_HOST=', To: 'DB_HOST={{ snipeit_install_dbhost }}'}
+       - { From: '^DB_DATABASE=', To: 'DB_DATABASE={{ snipeit_install_dbname }}'}
+       - { From: '^DB_USERNAME=', To: 'DB_USERNAME={{ snipeit_install_dbusername }}'}
+       - { From: '^DB_PASSWORD=', To: 'DB_PASSWORD={{ snipeit_install_dbpassword }}'}
+       - { From: '^DB_PREFIX=', To: 'DB_PREFIX={{ snipeit_install_dbprefix }}'}
+       - { From: '^MAIL_DRIVER=', To: 'MAIL_DRIVER={{ snipeit_install_maildriver }}'}
+       - { From: '^MAIL_HOST=', To: 'MAIL_HOST={{ snipeit_install_mailhost }}'}
+       - { From: '^MAIL_USERNAME=', To: 'MAIL_USERNAME={{ snipeit_install_mailusername }}'}
+       - { From: '^MAIL_PASSWORD=', To: 'MAIL_PASSWORD={{ snipeit_install_mailpassword }}'}
+       - { From: '^MAIL_ENCRYPTION=', To: 'MAIL_ENCRYPTION={{ snipeit_install_mailencryption }}'}
+       - { From: '^MAIL_FROM_ADDR=', To: 'MAIL_FROM_ADDR={{ snipeit_install_mailfromaddr }}'}
+       - { From: '^MAIL_FROM_NAME=', To: 'MAIL_FROM_NAME={{ snipeit_install_mailfromname }}'}
+       - { From: '^MAIL_REPLYTO_ADDR=', To: 'MAIL_REPLYTO_ADDR={{ snipeit_install_mailreplytoaddr }}'}
+       - { From: '^MAIL_REPLYTO_NAME=', To: 'MAIL_REPLYTO_NAME={{ snipeit_install_mailreplytoname }}'}
+       - { From: '^MAIL_AUTO_EMBED=', To: 'MAIL_AUTO_EMBED={{ snipeit_install_mailautoembed }}'}
+       - { From: '^MAIL_AUTO_EMBED_METHOD=', To: 'MAIL_AUTO_EMBED_METHOD={{ snipeit_install_mailautoembedmethof }}'}
+       
+
+      
