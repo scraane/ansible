@@ -46,7 +46,7 @@
             append=yes
 
     - name: Make changes to apache available sites file file
-      lineinfile:"/etc/apache2/sites-available/{{ item.File }}"
+      lineinfile: "/etc/apache2/sites-available/{{ item.File }}"
         path: 
         backup: yes
         regexp: '^DocumentRoot'
