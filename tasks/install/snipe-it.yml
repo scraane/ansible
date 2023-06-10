@@ -29,6 +29,7 @@
         name: 
           - php-common
           - php-cli
+          - php-curl
           - libapache2-mod-php
           - mariadb-server
           - mariadb-client
