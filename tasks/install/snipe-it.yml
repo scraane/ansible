@@ -104,7 +104,7 @@
       
     - name: Change file ownership, group and permissions
       file:
-        path: {{item.Location}}
+        path: "{{item.Location}}"
         owner: snipeit
         mode: '0755'
       with_items:
