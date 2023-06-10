@@ -39,7 +39,7 @@
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
         name: ''
-       host_all: true
+        host_all: true
         state: absent
         
     - name: Create new databases with {{ snipeit_install_dbname }}
