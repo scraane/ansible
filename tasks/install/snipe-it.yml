@@ -42,12 +42,12 @@
         host_all: true
         state: absent
         
-    - name: Create new databases with {{ snipeit_install_dbname }}
+    - name: "Create new databases with {{ snipeit_install_dbname }}"
       community.mysql.mysql_db:
         name: {{ snipeit_install_dbname }}
         state: present
     
-    - name: Create database user with name {{ snipeit_install_dbusername }} with all database privileges
+    - name: "Create database user with name {{ snipeit_install_dbusername }} with all database privileges"
       community.mysql.mysql_user:
         name: "{{ snipeit_install_dbusername }}"
         password: "{{ snipeit_install_dbpassword }}"
