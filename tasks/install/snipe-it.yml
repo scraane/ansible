@@ -46,16 +46,16 @@
             append=yes
 
     - name: Make changes to apache available sites file 000-default.conf
-      lineinfile: /etc/apache2/sites-available/000-default.conf
-        path: 
+      lineinfile: 
+        path: /etc/apache2/sites-available/000-default.conf
         backup: yes
         regexp: '^DocumentRoot'
         line: 'DocumentRoot /var/www/snipe-it'
         state: present  
 
     - name: Make changes to apache available sites file default-ssl.conf
-      lineinfile: /etc/apache2/sites-available/default-ssl.conf
-        path: 
+      lineinfile: 
+        path: /etc/apache2/sites-available/default-ssl.conf
         backup: yes
         regexp: '^DocumentRoot'
         line: 'DocumentRoot /var/www/snipe-it'
