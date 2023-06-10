@@ -159,6 +159,9 @@
       composer:
         command: install
         working_dir: /var/www/snipe-it
+      environment:
+        COMPOSER_NO_INTERACTION: "1"   
+        COMPOSER_ALLOW_SUPERUSER: "1"
 
     - name: Generate APP_KEY
       register: ps
