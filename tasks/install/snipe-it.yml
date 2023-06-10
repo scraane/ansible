@@ -114,25 +114,25 @@
         group: "wwww-data"
         mode: '0755'
       with_items:
-        - { Location: '/var/www/snipeit/storage' }
-        - { Location: '/var/www/snipeit/public/uploads' }
-        - { Location: '/var/www/snipeit/bootstrap/cache' }
+        - { Location: '/var/www/snipe-it/storage' }
+        - { Location: '/var/www/snipe-it/public/uploads' }
+        - { Location: '/var/www/snipe-it/bootstrap/cache' }
         
     - name: Install composer
       register: ps
-      shell: "cd /var/www/snipeit && curl -sS https://getcomposer.org/installer | php"
+      shell: "cd /var/www/snipe-it && curl -sS https://getcomposer.org/installer | php"
 
     - debug: var=ps.stdout_lines
       
     - name: Install dependecies with composer
       remote_user: snipeit
       register: ps
-      shell: "cd /var/www/snipeit && php composer.phar install --no-dev --prefer-source"
+      shell: "cd /var/www/snipe-it && php composer.phar install --no-dev --prefer-source"
        
     - debug: var=ps.stdout_lines
 
     - name: Generate APP_KEY
       register: ps
-      shell: "cd /var/www/snipeit && php artisan key:generate"
+      shell: "cd /var/www/snipe-it && php artisan key:generate"
       
     - debug: var=ps.stdout_lines
