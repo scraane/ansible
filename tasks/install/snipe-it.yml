@@ -103,14 +103,15 @@
     - name: Add snipeit user with no login and home
       user:
         name: "snipeit"
-        group: "apache"
+        group: "www-data"
         shell: /sbin/nologin
         create_home: no
       
     - name: Change file ownership, group and permissions
       file:
         path: "{{item.Location}}"
-        owner: snipeit
+        owner: "snipeit"
+        group: "wwww-data"
         mode: '0755'
       with_items:
         - { Location: '/var/www/snipeit/storage' }
