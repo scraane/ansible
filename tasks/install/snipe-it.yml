@@ -19,6 +19,7 @@
           - sudo
           - neofetch
           - git
+          - python-is-python3
         state: present
         update_cache: true
       become: true
