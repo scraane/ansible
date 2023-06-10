@@ -38,7 +38,18 @@
         state: present
         update_cache: true
       become: true
-      
+
+    - name: Make changes to apache available sites file file
+      lineinfile:"/etc/apache2/sites-available/{{ item.File }}"
+        path: 
+        backup: yes
+        regexp: '^DocumentRoot'
+        line: 'DocumentRoot /var/www/snipe-it'
+        state: present  
+      with_items:
+       - { File: '000-default.conf'}
+       - { File: 'default-ssl.conf'}
+
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
         name: ''
