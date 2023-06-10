@@ -30,7 +30,7 @@
           - php-cli
           - libapache2-mod-php
           - mariadb-server
-          - mysql-client
+          - mariadb-client
           - imagemagick
           - php-imagick
         state: present
