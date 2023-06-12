@@ -31,6 +31,8 @@
           - php-cli
           - php-curl
           - php-dom
+          - php-zip
+          - php-gd
           - libapache2-mod-php
           - mariadb-server
           - mariadb-client
@@ -176,6 +178,6 @@
 
     - name: Generate APP_KEY
       register: ps
-      shell: "cd /var/www/snipe-it && php artisan key:generate"
+      shell: "cd /var/www/snipe-it && yes | php artisan key:generate"
       
     - debug: var=ps.stdout_lines
