@@ -132,7 +132,7 @@
     - name: Change file ownership, group and permissions
       file:
         path: '/var/www/snipe-it/'
-        owner: "snipeit"
+        owner: "root"
         group: "www-data"
         mode: '0775'
         recurse: yes
