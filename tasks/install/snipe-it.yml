@@ -53,7 +53,7 @@
         path: /etc/apache2/sites-available/000-default.conf
         backup: yes
         regexp: 'DocumentRoot /var/www/html'
-        line: '\tDocumentRoot /var/www/snipe-it/public'
+        line: '   DocumentRoot /var/www/snipe-it/public'
         state: present  
 
     - name: Make changes to apache available sites file default-ssl.conf
@@ -61,7 +61,7 @@
         path: /etc/apache2/sites-available/default-ssl.conf
         backup: yes
         regexp: 'DocumentRoot /var/www/html'
-        line: '\tDocumentRoot /var/www/snipe-it/public'
+        line: '   DocumentRoot /var/www/snipe-it/public'
         state: present  
 
     - name: Remove anonymous access to mysql
