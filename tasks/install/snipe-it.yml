@@ -63,6 +63,17 @@
         regexp: 'DocumentRoot /var/www/html'
         line: '   DocumentRoot /var/www/html/snipeit/public'
         state: present  
+        
+    - name: Add directives for mod_rewrite
+      blockinfile: |
+        path: /etc/apache2/sites-available/000-default.conf
+        insertbefore: '   DocumentRoot /var/www/html/snipeit/public'
+        content: "    <Directory /var/www/html/public>
+          Allow From All
+          AllowOverride All
+          Options -Indexes
+        </Directory>"
+          
 
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
@@ -132,7 +143,7 @@
     - name: Change file ownership, group and permissions
       file:
         path: '/var/www/html/snipeit/'
-        owner: "root"
+        owner: "www-data"
         group: "www-data"
         mode: '0775'
         recurse: yes
