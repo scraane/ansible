@@ -65,14 +65,15 @@
         state: present  
         
     - name: Add directives for mod_rewrite
-      blockinfile: |
+      blockinfile:
         path: /etc/apache2/sites-available/000-default.conf
         insertbefore: '   DocumentRoot /var/www/html/snipeit/public'
-        content: "    <Directory /var/www/html/public>
+        block: |
+        <Directory /var/www/html/public>
           Allow From All
           AllowOverride All
           Options -Indexes
-        </Directory>"
+        </Directory>
           
 
     - name: Remove anonymous access to mysql
