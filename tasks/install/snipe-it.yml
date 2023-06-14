@@ -161,6 +161,9 @@
           command: config
           arguments: github-oauth.github.com {{ snipeit_install_github_accesstoken }}
           global_command: true
+       environment:
+          COMPOSER_NO_INTERACTION: "1"   
+          COMPOSER_ALLOW_SUPERUSER: "1"   
       
     - name: Update composer
       become: yes
