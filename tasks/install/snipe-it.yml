@@ -52,7 +52,7 @@
       lineinfile: 
         path: /etc/apache2/sites-available/000-default.conf
         backup: yes
-        regexp: '^DocumentRoot /var/www/html'
+        regexp: 'DocumentRoot /var/www/html'
         line: 'DocumentRoot /var/www/snipe-it/public'
         state: present  
 
@@ -60,7 +60,7 @@
       lineinfile: 
         path: /etc/apache2/sites-available/default-ssl.conf
         backup: yes
-        regexp: '^DocumentRoot /var/www/html'
+        regexp: 'DocumentRoot /var/www/html'
         line: 'DocumentRoot /var/www/snipe-it/public'
         state: present  
 
