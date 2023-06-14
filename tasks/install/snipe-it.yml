@@ -53,7 +53,7 @@
         path: /etc/apache2/sites-available/000-default.conf
         backup: yes
         regexp: 'DocumentRoot /var/www/html'
-        line: '   DocumentRoot /var/www/snipe-it/public'
+        line: '   DocumentRoot /var/www/html/snipeit/public'
         state: present  
 
     - name: Make changes to apache available sites file default-ssl.conf
@@ -61,7 +61,7 @@
         path: /etc/apache2/sites-available/default-ssl.conf
         backup: yes
         regexp: 'DocumentRoot /var/www/html'
-        line: '   DocumentRoot /var/www/snipe-it/public'
+        line: '   DocumentRoot /var/www/html/snipeit/public'
         state: present  
 
     - name: Remove anonymous access to mysql
@@ -85,16 +85,16 @@
     - name: Clone Snipe-IT Git repo
       git:
         repo: https://github.com/snipe/snipe-it
-        dest: /var/www/snipe-it
+        dest: /var/www/html/snipeit
         single_branch: yes    
         version: master
 
     - name: Copy example .env file to .env
-      shell: "cp /var/www/snipe-it/.env.example /var/www/snipe-it/.env"
+      shell: "cp /var/www/html/snipeit/.env.example /var/www/html/snipeit/.env"
         
     - name: Make changes to .env file
       lineinfile:
-        path: /var/www/snipe-it/.env
+        path: /var/www/html/snipeit/.env
         backup: no
         regexp: '{{item.From}}'
         line: '{{item.To}}'
@@ -131,7 +131,7 @@
       
     - name: Change file ownership, group and permissions
       file:
-        path: '/var/www/snipe-it/'
+        path: '/var/www/html/snipeit/'
         owner: "root"
         group: "www-data"
         mode: '0775'
@@ -170,7 +170,7 @@
       become_user: snipeit
       composer:
         command: update
-        working_dir: /var/www/snipe-it
+        working_dir: /var/www/html/snipeit
       environment:
         COMPOSER_NO_INTERACTION: "1"   
         COMPOSER_ALLOW_SUPERUSER: "1"
@@ -180,13 +180,13 @@
       become_user: snipeit
       composer:
         command: install
-        working_dir: /var/www/snipe-it
+        working_dir: /var/www/html/snipeit
       environment:
         COMPOSER_NO_INTERACTION: "1"   
         COMPOSER_ALLOW_SUPERUSER: "1"
 
     - name: Generate APP_KEY
       register: ps
-      shell: "cd /var/www/snipe-it && yes | php artisan key:generate"
+      shell: "cd /var/www/html/snipeit && yes | php artisan key:generate"
       
     - debug: var=ps.stdout_lines
