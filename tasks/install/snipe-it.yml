@@ -30,7 +30,7 @@
           - php-common
           - php-cli
           - php-curl
-          - php-dom
+          - php-xml
           - php-zip
           - php-gd
           - libapache2-mod-php
