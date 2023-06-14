@@ -75,6 +75,10 @@
             Options -Indexes
           </Directory>
           
+    - name: Enable mod_rewrite in Apache
+      community.general.apache2_module:
+        state: present
+        name: rewrite
 
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
