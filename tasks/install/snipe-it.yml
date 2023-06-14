@@ -131,14 +131,12 @@
       
     - name: Change file ownership, group and permissions
       file:
-        path: "{{item.Location}}"
+        path: '/var/www/snipe-it/'
         owner: "snipeit"
         group: "www-data"
-        mode: '0755'
-      with_items:
-        - { Location: '/var/www/snipe-it/storage' }
-        - { Location: '/var/www/snipe-it/public/uploads' }
-        - { Location: '/var/www/snipe-it/bootstrap/cache' }
+        mode: '0775'
+        recurse: yes
+        state: directory
         
     - name: Download and install Composer
       shell: curl -sS https://getcomposer.org/installer | php
