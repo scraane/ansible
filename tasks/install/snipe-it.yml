@@ -125,7 +125,7 @@
        - { From: '^DB_DATABASE=', To: 'DB_DATABASE={{ snipeit_install_dbname }}'}
        - { From: '^DB_USERNAME=', To: 'DB_USERNAME={{ snipeit_install_dbusername }}'}
        - { From: '^DB_PASSWORD=', To: 'DB_PASSWORD={{ snipeit_install_dbpassword }}'}
-       - { From: '^APP_TRUSTED_PROXIES=', To 'APP_TRUSTED_PROXIES={{ snipeit_install_proxy }}'}
+       - { From: '^APP_TRUSTED_PROXIES=', To: 'APP_TRUSTED_PROXIES={{ snipeit_install_proxy }}'}
        - { From: '^DB_PREFIX=', To: 'DB_PREFIX={{ snipeit_install_dbprefix }}'}
        - { From: '^MAIL_DRIVER=', To: 'MAIL_DRIVER={{ snipeit_install_maildriver }}'}
        - { From: '^MAIL_HOST=', To: 'MAIL_HOST={{ snipeit_install_mailhost }}'}
