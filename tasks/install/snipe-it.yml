@@ -226,7 +226,7 @@
         
     - name: add path to git safe directory
       copy:
-        path: /home/scraane/.gitconfig
+        dest: '/home/scraane/.gitconfig'
         content: |
    [safe]
         directory = /var/www/html/snipeit
