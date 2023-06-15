@@ -69,7 +69,7 @@
         path: /etc/apache2/sites-available/000-default.conf
         insertbefore: '   DocumentRoot /var/www/html/snipeit/public'
         block: |
-          <Directory /var/www/html/public>
+          <Directory /var/www/html/snipeit/public>
             Allow From All
             AllowOverride All
             Options -Indexes
