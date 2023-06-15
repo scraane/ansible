@@ -201,7 +201,7 @@
 
     - name: Install dependecies with composer 
       become: yes
-      become_user: snipeit
+      become_user: scraane
       composer:
         command: install
         working_dir: /var/www/html/snipeit
@@ -225,4 +225,6 @@
         state: directory
         
     - name: set git directory as safe
+      become: yes
+      become_user: scraane
       shell: "git config --global --add safe.directory /var/www/html/snipeit"
