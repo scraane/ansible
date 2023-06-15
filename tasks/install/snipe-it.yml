@@ -191,7 +191,8 @@
       
     - name: Update composer
       become: yes
-      become_user: snipeit
+      become_user: scraane
+      debugger: always
       composer:
         command: update
         working_dir: /var/www/html/snipeit
@@ -202,6 +203,7 @@
     - name: Install dependecies with composer 
       become: yes
       become_user: scraane
+      debugger: always
       composer:
         command: install
         working_dir: /var/www/html/snipeit
