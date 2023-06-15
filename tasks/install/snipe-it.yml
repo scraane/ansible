@@ -228,5 +228,5 @@
       copy:
         dest: '/home/scraane/.gitconfig'
         content: |
-   [safe]
-        directory = /var/www/html/snipeit
+          [safe]
+                directory = /var/www/html/snipeit
