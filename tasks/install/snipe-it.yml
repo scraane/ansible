@@ -227,4 +227,7 @@
     - name: set git directory as safe
       become: yes
       become_user: scraane
-      shell: "git config --global --add safe.directory /var/www/html/snipeit"
+      git_config:
+        name: safe.directory
+        value: /var/www/html/snipeit
+        scope: global
