@@ -34,12 +34,15 @@
           - php-zip
           - php-gd
           - php-mysql
+          - php-bcmath
+          - php-ldap
+          - php-mbstring
+          - php-imagick
           - libapache2-mod-php
           - mariadb-server
           - mariadb-client
           - python3-mysqldb
           - imagemagick
-          - php-imagick
         state: present
         update_cache: true
       become: true
