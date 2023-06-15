@@ -218,6 +218,8 @@
     - name: add path to git safe directory
       copy:
         dest: '/home/scraane/.gitconfig'
+        owner: scraane
+        group: sudo
         content: |
           [safe]
                 directory = /var/www/html/snipeit
