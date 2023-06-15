@@ -33,6 +33,7 @@
           - php-xml
           - php-zip
           - php-gd
+          - php-mysql
           - libapache2-mod-php
           - mariadb-server
           - mariadb-client
@@ -80,6 +81,11 @@
       community.general.apache2_module:
         state: present
         name: rewrite
+        
+    - name: Restart service apache2
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
 
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
