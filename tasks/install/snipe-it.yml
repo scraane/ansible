@@ -87,6 +87,10 @@
         name: apache2
         state: restarted
 
+    - name: create random but idempotent password
+      set_fact:
+        mysql_password: "{{ lookup('ansible.builtin.password', '/dev/null', seed=inventory_hostname) }}"
+
     - name: Remove anonymous access to mysql
       community.mysql.mysql_user:
         name: ''
@@ -101,7 +105,7 @@
     - name: "Create database user with name {{ snipeit_install_dbusername }} with all database privileges"
       community.mysql.mysql_user:
         name: "{{ snipeit_install_dbusername }}"
-        password: "{{ snipeit_install_dbpassword }}"
+        password: "{{ mysql_password }}"
         priv: '{{ snipeit_install_dbname }}.*:ALL'
         state: present
   
@@ -130,7 +134,7 @@
        - { From: '^DB_HOST=', To: 'DB_HOST={{ snipeit_install_dbhost }}'}
        - { From: '^DB_DATABASE=', To: 'DB_DATABASE={{ snipeit_install_dbname }}'}
        - { From: '^DB_USERNAME=', To: 'DB_USERNAME={{ snipeit_install_dbusername }}'}
-       - { From: '^DB_PASSWORD=', To: 'DB_PASSWORD={{ snipeit_install_dbpassword }}'}
+       - { From: '^DB_PASSWORD=', To: 'DB_PASSWORD={{ mysql_password }}'}
        - { From: '^APP_TRUSTED_PROXIES=', To: 'APP_TRUSTED_PROXIES={{ snipeit_install_proxy }}'}
        - { From: '^DB_PREFIX=', To: 'DB_PREFIX={{ snipeit_install_dbprefix }}'}
        - { From: '^MAIL_DRIVER=', To: 'MAIL_DRIVER={{ snipeit_install_maildriver }}'}
