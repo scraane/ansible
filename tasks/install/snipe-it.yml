@@ -225,8 +225,8 @@
                 directory = /var/www/html/snipeit
                 
     - name: create laravel log file
-      copy:
-        dest: /var/www/html/snipeit/storage/logs/laravel.log
+      file:
+        path: /var/www/html/snipeit/storage/logs/laravel.log
         state: touch
 
     - name: Change file ownership, group and permissions
