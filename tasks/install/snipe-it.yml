@@ -153,13 +153,6 @@
        - { From: '^MAIL_AUTO_EMBED_METHOD=', To: 'MAIL_AUTO_EMBED_METHOD={{ snipeit_install_mailautoembedmethof }}'}
        - { From: '^IMAGE_LIB=', To: 'IMAGE_LIB={{ snipeit_install_imagelib }}'}
        
-    - name: Add snipeit user with no login and home
-      user:
-        name: "snipeit"
-        group: "www-data"
-        shell: /sbin/nologin
-        create_home: no
-      
     - name: Change file ownership, group and permissions
       file:
         path: '/var/www/html/snipeit/'
@@ -221,3 +214,15 @@
       shell: "cd /var/www/html/snipeit && yes | php artisan key:generate"
       
     - debug: var=ps.stdout_lines
+    
+    - name: Change file ownership, group and permissions
+      file:
+        path: '/var/www/html/snipeit/'
+        owner: "www-data"
+        group: "www-data"
+        mode: '0775'
+        recurse: yes
+        state: directory
+        
+    - name: set git directory as safe
+      shell: "git config --global --add safe.directory /var/www/html/snipeit"
