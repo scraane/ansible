@@ -74,6 +74,7 @@
             AllowOverride All
             Options -Indexes
           </Directory>
+          ServerName {{ snipeit_install_hostname }}
           
     - name: Enable mod_rewrite in Apache
       community.general.apache2_module:
@@ -117,7 +118,7 @@
         state: present  
       with_items:
        - { From: '^APP_ENV=', To: 'APP_ENV=production'}
-       - { From: '^APP_URL=', To: 'APP_URL={{ snipeit_install_appurl }}'}
+       - { From: '^APP_URL=', To: 'APP_URL={{ snipeit_install_protocol }}://{{ snipeit_install_hostname }}'}
        - { From: '^APP_TIMEZONE=', To: 'APP_TIMEZONE={{ snipeit_install_timezone }}'}
        - { From: '^DB_CONNECTION=', To: 'DB_CONNECTION=mysql'}
        - { From: '^DB_HOST=', To: 'DB_HOST={{ snipeit_install_dbhost }}'}
