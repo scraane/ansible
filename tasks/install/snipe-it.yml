@@ -215,6 +215,18 @@
       
     - debug: var=ps.stdout_lines
     
+    - name: add path to git safe directory
+      copy:
+        dest: '/home/scraane/.gitconfig'
+        content: |
+          [safe]
+                directory = /var/www/html/snipeit
+                
+    - name: create laravel log file
+      copy:
+        dest: /var/www/html/snipeit/storage/logs/laravel.log
+        state: touch
+
     - name: Change file ownership, group and permissions
       file:
         path: '/var/www/html/snipeit/'
@@ -223,10 +235,3 @@
         mode: '0775'
         recurse: yes
         state: directory
-        
-    - name: add path to git safe directory
-      copy:
-        dest: '/home/scraane/.gitconfig'
-        content: |
-          [safe]
-                directory = /var/www/html/snipeit
