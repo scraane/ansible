@@ -1,3 +1,9 @@
+---
+- hosts: all
+
+  become: yes
+  tasks:
+    
     - name: "Check if ssl cert {{ ssl_cert_current }} has been renewed" 
       copy:
         src: {{ ssl_cert_archive }}
@@ -6,3 +12,6 @@
       diff: yes
       register: file_changed
       msg: file_changed
+
+    - name: "file has changed"
+      when: file_changed == "true"
