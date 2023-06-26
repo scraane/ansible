@@ -4,10 +4,10 @@
   become: yes
   tasks:
     
-    - name: "Check if ssl cert {{ ssl_cert_current }} has been renewed" 
+    - name: "Check if ssl cert {{ ssl_cert_current_location }}/cert.pem has been renewed" 
       copy:
-        src: {{ ssl_cert_archive }}
-        dest: {{ ssl_cert_current }}
+        src: {{ ssl_cert_current_location }}/cert.pem
+        dest: {{ ssl_cert_archive_location }}/cert.pem
       check_mode: yes
       diff: yes
       register: file_changed
