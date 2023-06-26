@@ -11,7 +11,6 @@
       check_mode: yes
       diff: yes
       register: file_changed
-      msg: file_changed
 
     - name: "file has changed"
       when: file_changed == "true"
