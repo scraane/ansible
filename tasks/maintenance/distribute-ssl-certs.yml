@@ -5,4 +5,4 @@
       check_mode: yes
       diff: yes
       register: file_changed
-      msg 
+      msg: file_changed
