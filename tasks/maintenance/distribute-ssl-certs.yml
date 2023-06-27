@@ -11,24 +11,34 @@
 
     - name: "The files have not changed"
       set_fact: 
-        files_changed: "no"
+        file_changed: "no"
       when: diff.stdout_lines == "[]"
 
     - name: "The files have changed"
       set_fact: 
-        files_changed: "yes"
+        file_changed: "yes"
       when: diff.stdout_lines != "[]"
       
     - debug:
         var: diff.stdout_lines
+    
+    - name: add variables to dummy host
+      add_host:
+        name: "variable_holder"
+        shared_variable:  "{{ file_changed }}"
+
   
 - hosts: target
 
   become: yes
+
+  vars:
+    file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
+    
   tasks:
 
     - meta: end_play
-      when: hostvars['192.168.10.102']['file_changed'] == "no"
+      when: file_changed == "yes"
     
     - name: Going through all targets
       shell: "ls"
