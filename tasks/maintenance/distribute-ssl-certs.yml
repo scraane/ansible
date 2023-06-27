@@ -76,7 +76,7 @@
       set_fact:
         cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
         privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
-        chain_pem: "{{ hostvars['variable_holder']['chin_pem'] }}"
+        chain_pem: "{{ hostvars['variable_holder']['chain_pem'] }}"
         fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
       when: file_changed == "1"
     
