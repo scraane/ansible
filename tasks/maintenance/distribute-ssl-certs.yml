@@ -22,13 +22,13 @@
       slurp:
          src: "{{ ssl_cert_current_location }}/cert.pem"
       register: cert_pem
-      when: diff.rc not in [ 1 ]
+      when: diff.rc == 1
 
     - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
         cert_pem:  "{{ cert_pem }}"
-      when: diff.rc not in [ 1 ]
+      when: diff.rc == 1
 
   
 - hosts: target
