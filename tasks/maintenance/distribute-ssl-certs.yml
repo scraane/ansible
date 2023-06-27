@@ -26,6 +26,7 @@
 
   - fail:
       msg: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
+    register: files_same
     failed_when: file_1.stat.checksum == file_2.stat.checksum
 
 - hosts: target
