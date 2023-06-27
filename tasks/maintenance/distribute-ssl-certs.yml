@@ -8,7 +8,11 @@
       shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
       register: diff
       failed_when: diff.rc not in [ 0, 1 ]
-  
+
+    - name: "Setting variable"
+      set_fact: files_changed: "yes"
+      when: diff.stdout_lines == ""
+      
     - debug:
         var: diff.stdout_lines
   
