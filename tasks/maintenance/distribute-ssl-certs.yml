@@ -30,7 +30,7 @@
     when: file_1.stat.checksum == file_2.stat.checksum
 
   - meta: end_play
-    when: file_same == "true"
+    when: file_1.stat.checksum == file_2.stat.checksum
 
 - hosts: target
 
