@@ -24,11 +24,8 @@
   - debug:
       var: file_2.stat.checksum
 
-  - name: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
-    when: file_1.stat.checksum == file_2.stat.checksum
-    ignore_errors: true
-
   - meta: end_play
+    name: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
     when: file_1.stat.checksum == file_2.stat.checksum
 
 - hosts: target
