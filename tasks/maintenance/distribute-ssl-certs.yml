@@ -13,11 +13,6 @@
       meta: end_play
       when: diff.rc == 0
 
-    - name: Setting variable to dummy host for further processing
-      add_host:
-        name: "variable_holder"
-        file_changed:  "{{ diff.rc }}"
-
     - name: Copy content of {{ ssl_cert_current_location }}/cert.pem to variable
       slurp:
          src: '{{ ssl_cert_current_location }}/cert.pem'
@@ -47,10 +42,12 @@
         name: "variable_holder"
         "{{ item.Var }}":  "{{ item.Content }}"
       with_items:
+        - { Var: 'file_changed', Content:'{{ diff.rc }}'}
         - { Var: 'cert_pem', Content: '{{ cert_pem.content | b64decode }}'}
         - { Var: 'privkey_pem', Content: '{{ privkey_pem.content | b64decode }}'}
         - { Var: 'chain_pem', Content: '{{ chain_pem.content | b64decode }}'}
         - { Var: 'fullchain_pem', Content: '{{ fullchain_pem.content | b64decode }}'}
+      no_log: true
       when: diff.rc == 1
 
   
@@ -67,7 +64,7 @@
     
   tasks:
     - debug:
-        msg: "{{ cert_pem }}"
+        msg: "{{ file_changed }}"
         
     - name: The file has not changed. Ending playbook
       meta: end_play
