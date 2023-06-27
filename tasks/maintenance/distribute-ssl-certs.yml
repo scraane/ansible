@@ -36,7 +36,9 @@
     file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
     
   tasks:
-
+    - debug:
+        msg: "{{ file_changed }}"
+        
     - meta: end_play
       when: file_changed == "yes"
     
