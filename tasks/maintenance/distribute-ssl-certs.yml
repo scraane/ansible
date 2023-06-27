@@ -4,13 +4,12 @@
   become: yes
   tasks:
 
-
-  - shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
-    register: diff
-    failed_when: diff.rc not in [ 0, 1 ]
-
-  - debug:
-    var: diff.stdout_lines
+    - shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
+      register: diff
+      failed_when: diff.rc not in [ 0, 1 ]
+  
+    - debug:
+      var: diff.stdout_lines
   
 - hosts: target
 
