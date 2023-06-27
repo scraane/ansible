@@ -18,6 +18,12 @@
       get_checksum: yes
     register: file_2
 
+  - debug:
+      var: file_1.stat.checksum
+
+  - debug:
+      var: file_2.stat.checksum
+
   - name: Check if the files are the same
     fail: 
       set_fact: file_same="true"
