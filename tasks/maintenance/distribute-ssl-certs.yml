@@ -21,7 +21,7 @@
     - name: Copy content of {{ item.File }} to variable
       slurp:
          src: '{{ item.File }}'
-      register: '{{ item.Var }}'
+      register: "{{ item.Var }}"
       with_items:
         - {Var:'cert_pem', File: '{{ ssl_cert_current_location }}/cert.pem'}
         - {Var:'privkey_pem', File: '{{ ssl_cert_current_location }}/privkey.pem'}
