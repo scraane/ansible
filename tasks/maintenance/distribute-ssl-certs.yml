@@ -64,7 +64,7 @@
     - debug:
         msg: "{{ cert_pem }}"
         
-    - name: The file has not changed. Ending playbook
+    - name: If the file has changed we will end the playbook
       meta: end_play
       when: file_changed == "0"
     
