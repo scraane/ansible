@@ -105,3 +105,12 @@
     - debug:
         var: pveproxy_status.status.ActiveState
     
+    - name: Send Telegram message since certificates are updated
+      telegram:
+        token: "{{ notification_telegram_token }}"
+        api_args:
+          chat_id: "{{ notification_telegram_chat_id }}"
+          parse_mode: "markdown"
+          text: "Certificate updated on: {{ inventory_hostname }}"
+          disable_web_page_preview: true
+          disable_notification: false
