@@ -11,8 +11,8 @@
 
     - name: "Setting variable"
       set_fact: 
-        files_changed: "yes"
-      when: diff.stdout_lines == ""
+        files_changed: "no"
+      when: diff.stdout_lines == "[]"
       
     - debug:
         var: diff.stdout_lines
@@ -23,7 +23,7 @@
   tasks:
 
     - meta: end_play
-      when: diff.stdout_lines == ""
+      when: files_changed == "no"
     
     - name: Going through all targets
       shell: "ls"
