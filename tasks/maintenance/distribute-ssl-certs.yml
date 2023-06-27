@@ -9,7 +9,7 @@
       failed_when: diff.rc not in [ 0, 1 ]
   
     - debug:
-      var: diff.stdout_lines
+        var: diff.stdout_lines
   
 - hosts: target
 
