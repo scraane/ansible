@@ -33,7 +33,7 @@
   become: yes
 
   vars:
-    file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
+    file_changed: "{{ hostvars['variable_holder']['shared_variable'] }}"
     
   tasks:
     - debug:
