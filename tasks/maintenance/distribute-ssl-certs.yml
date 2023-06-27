@@ -12,12 +12,12 @@
     - name: "The files have not changed"
       set_fact: 
         file_changed: "false"
-      when: diff.stdout_lines == ""
+      when: diff.rc not in [ 1 ]
 
     - name: "The files have changed"
       set_fact: 
         file_changed: "true"
-      when: diff.stdout_lines != "[]"
+      when: diff.rc not in [ 0 ]
       
     - debug:
         var: diff.stdout_lines
