@@ -13,6 +13,12 @@
       meta: end_play
       when: diff.rc == 0
 
+    - name: Copy cert to compare location for next time
+      shell: cp {{ ssl_cert_current_location }}/cert.pem /root/ssl_archive/
+      register: cp
+      failed_when: cp.rc not in [ 0, 1 ]
+      when: diff.rc == 1
+    
     - name: Copy content of {{ ssl_cert_current_location }}/cert.pem to variable
       slurp:
          src: '{{ ssl_cert_current_location }}/cert.pem'
@@ -68,6 +74,27 @@
       meta: end_play
       when: file_changed == "0"
     
-    - name: Going through all targets
-      shell: "ls"
+    - name: Saving PVE private key
+      copy:
+        content: "{{ privkey_pem }}"
+        dest: "{{ ssl_cert_pve_location }}/pveproxy-ssl.key"
       when: file_changed == "1"
+
+    - name: Saving PVE fullchain cert
+      copy:
+        content: "{{ fullchain_pem }}"
+        dest: "{{ ssl_cert_pve_location }}/pveproxy-ssl.pem"
+      when: file_changed == "1"
+
+    - name: Restarting pve proxy
+      shell: pveproxy restart
+      when: file_changed == "1"
+    
+    - name: Get PVE Proxy status
+      ansible.builtin.systemd:
+        name: "pveproxy"
+      register: pveproxy_status
+    
+    - debug:
+        var: pveproxy_status.status.ActiveState
+    
