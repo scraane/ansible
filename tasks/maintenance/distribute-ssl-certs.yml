@@ -13,6 +13,8 @@
       add_host:
         name: "variable_holder"
         file_changed:  "{{ diff.rc }}"
+    - debug:
+        msg: diff.rc
         
     - name: The file has not changed. Ending 1st part of playbook
       meta: end_play
@@ -57,7 +59,6 @@
         fullchain_pem: "{{ fullchain_pem.content | b64decode }}"
       no_log: true
       when: diff.rc == 1
-
   
 - hosts: target
 
@@ -68,7 +69,7 @@
     
   tasks:
        
-    - name: If the file has changed we will end the playbook
+    - name: If the file has not changed we will end the playbook
       meta: end_play
       when: file_changed == "0"
 
