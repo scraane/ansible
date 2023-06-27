@@ -47,10 +47,11 @@
         name: "variable_holder"
         "{{ item.Var }}":  "{{ item.Content }}"
       with_items:
-        - { Var: 'cert_pem', Content: '{{ cert_pem.content }}'}
+        - { Var: 'cert_pem', Content: '{{ cert_pem.content | b64decode }}'}
         - { Var: 'privkey_pem', Content: '{{ privkey_pem.content | b64decode }}'}
         - { Var: 'chain_pem', Content: '{{ chain_pem.content | b64decode }}'}
         - { Var: 'fullchain_pem', Content: '{{ fullchain_pem.content | b64decode }}'}
+      no_log: true
       when: diff.rc == 1
 
   
@@ -60,7 +61,7 @@
 
   vars:
     file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
-    cert_pem: "{{ hostvars['variable_holder']['cert_pem' | b64decode] }}"
+    cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
     privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
     chain_pem: "{{ hostvars['variable_holder']['chin_pem'] }}"
     fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
