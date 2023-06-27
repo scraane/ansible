@@ -18,15 +18,28 @@
         name: "variable_holder"
         file_changed:  "{{ diff.rc }}"
 
-    - name: Copy content of {{ item.File }} to variable
+    - name: Copy content of {{ ssl_cert_current_location }}/cert.pem to variable
       slurp:
-         src: '{{ item.File }}'
-      register: "{{ item.Var }}"
-      with_items:
-        - {Var:'cert_pem', File: '{{ ssl_cert_current_location }}/cert.pem'}
-        - {Var:'privkey_pem', File: '{{ ssl_cert_current_location }}/privkey.pem'}
-        - {Var:'chain_pem', File: '{{ ssl_cert_current_location }}/chain.pem'}
-        - {Var:'fullchain_pem', File: '{{ ssl_cert_current_location }}/fullchain.pem'}
+         src: '{{ ssl_cert_current_location }}/cert.pem'
+      register: cert_pem
+      when: diff.rc == 1
+
+    - name: Copy content of {{ ssl_cert_current_location }}/privkey.pem to variable
+      slurp:
+         src: '{{ ssl_cert_current_location }}/privkey.pem'
+      register: privkey_pem
+      when: diff.rc == 1
+      
+    - name: Copy content of {{ ssl_cert_current_location }}/chain.pem to variable
+      slurp:
+         src: '{{ ssl_cert_current_location }}/chain.pem'
+      register: chain_pem
+      when: diff.rc == 1
+      
+    - name: Copy content of {{ ssl_cert_current_location }}/fullchain.pem to variable
+      slurp:
+         src: '{{ ssl_cert_current_location }}/fullchain.pem'
+      register: fullchain_pem
       when: diff.rc == 1
 
     - name: Setting variable to dummy host for further processing
@@ -34,7 +47,7 @@
         name: "variable_holder"
         "{{ item.Var }}":  "{{ item.Content }}"
       with_items:
-        - { Var: 'cert_pem', Content: '{{ cert_pem.content | b64decode }}'}
+        - { Var: 'cert_pem', Content: '{{ cert_pem.content }}'}
         - { Var: 'privkey_pem', Content: '{{ privkey_pem.content | b64decode }}'}
         - { Var: 'chain_pem', Content: '{{ chain_pem.content | b64decode }}'}
         - { Var: 'fullchain_pem', Content: '{{ fullchain_pem.content | b64decode }}'}
@@ -47,7 +60,10 @@
 
   vars:
     file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
-    cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
+    cert_pem: "{{ hostvars['variable_holder']['cert_pem' | b64decode] }}"
+    privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
+    chain_pem: "{{ hostvars['variable_holder']['chin_pem'] }}"
+    fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
     
   tasks:
     - debug:
