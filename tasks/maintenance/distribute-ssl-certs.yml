@@ -27,7 +27,7 @@
     - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
-        cert_pem:  "{{ cert_pem }}"
+        cert_pem:  "{{ cert_pem.content | b64decode}}"
       when: diff.rc == 1
 
   
