@@ -10,7 +10,8 @@
       failed_when: diff.rc not in [ 0, 1 ]
 
     - name: "Setting variable"
-      set_fact: files_changed: "yes"
+      set_fact: 
+        files_changed: "yes"
       when: diff.stdout_lines == ""
       
     - debug:
