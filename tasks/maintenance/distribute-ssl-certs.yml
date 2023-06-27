@@ -40,7 +40,7 @@
     - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
-        "{{ item.Var }}":  "{{ item.Content }}"
+        '{{ item.Var }}':  "{{ item.Content }}"
       with_items:
         - { Var: 'file_changed', Content: '{{ diff.rc }}'}
         - { Var: 'cert_pem', Content: '{{ cert_pem.content | b64decode }}'}
