@@ -19,8 +19,9 @@
         file_changed:  "{{ diff.rc }}"
 
     - name: Copy content of file to variable
-      vars:
-         cert_pem: "{{ lookup('file', '{{ ssl_cert_current_location }}/cert.pem') }}"
+      slurp:
+         src: "{{ ssl_cert_current_location }}/cert.pem"
+      register: cert_pem
       when: diff.rc not in [ 1 ]
 
     - name: Setting variable to dummy host for further processing
