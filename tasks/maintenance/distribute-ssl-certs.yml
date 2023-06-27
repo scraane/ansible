@@ -24,8 +24,7 @@
   - debug:
       var: file_2.stat.checksum
 
-  - name: Check if the files are the same
-    msg: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
+  - name: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
     when: file_1.stat.checksum == file_2.stat.checksum
     ignore_errors: true
 
