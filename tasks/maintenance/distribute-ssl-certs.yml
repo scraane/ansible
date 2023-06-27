@@ -42,7 +42,7 @@
         name: "variable_holder"
         "{{ item.Var }}":  "{{ item.Content }}"
       with_items:
-        - { Var: 'file_changed', Content:'{{ diff.rc }}'}
+        - { Var: 'file_changed', Content: '{{ diff.rc }}'}
         - { Var: 'cert_pem', Content: '{{ cert_pem.content | b64decode }}'}
         - { Var: 'privkey_pem', Content: '{{ privkey_pem.content | b64decode }}'}
         - { Var: 'chain_pem', Content: '{{ chain_pem.content | b64decode }}'}
