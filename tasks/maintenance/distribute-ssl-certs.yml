@@ -8,7 +8,12 @@
       shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
       register: diff
       failed_when: diff.rc not in [ 0, 1 ]
-
+      
+    - name: Setting variable to dummy host for further processing
+      add_host:
+        name: "variable_holder"
+        file_changed:  "{{ diff.rc }}"
+        
     - name: The file has not changed. Ending 1st part of playbook
       meta: end_play
       when: diff.rc == 0
@@ -46,7 +51,6 @@
     - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
-        file_changed:  "{{ diff.rc }}"
         cert_pem:  "{{ cert_pem.content | b64decode }}"
         privkey_pem: "{{ privkey_pem.content | b64decode }}"
         chain_pem: "{{ chain_pem.content | b64decode }}"
