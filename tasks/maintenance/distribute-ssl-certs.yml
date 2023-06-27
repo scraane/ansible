@@ -51,7 +51,6 @@
         - { Var: 'privkey_pem', Content: '{{ privkey_pem.content | b64decode }}'}
         - { Var: 'chain_pem', Content: '{{ chain_pem.content | b64decode }}'}
         - { Var: 'fullchain_pem', Content: '{{ fullchain_pem.content | b64decode }}'}
-      no_log: true
       when: diff.rc == 1
 
   
