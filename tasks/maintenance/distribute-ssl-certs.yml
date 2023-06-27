@@ -11,7 +11,7 @@
 
     - name: The file has not changed. Ending 1st part of playbook
       meta: end_play
-      when: diff.rc not in [ 0 ]
+      when: diff.rc == 0
 
     - name: Setting variable to dummy host for further processing
       add_host:
