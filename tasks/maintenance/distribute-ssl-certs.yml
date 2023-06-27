@@ -25,8 +25,7 @@
       var: file_2.stat.checksum
 
   - name: Check if the files are the same
-    fail: 
-      msg: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
+    msg: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
     when: file_1.stat.checksum == file_2.stat.checksum
     ignore_errors: true
 
@@ -37,6 +36,10 @@
 
   become: yes
   tasks:
+
+    - meta: end_play
+      when: file_1.stat.checksum == file_2.stat.checksum
+    
     - name: Going through all targets
       shell: "ls"
       when: file_changed == "true"
