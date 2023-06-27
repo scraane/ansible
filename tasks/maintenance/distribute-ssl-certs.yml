@@ -4,7 +4,7 @@
   become: yes
   tasks:
 
-  - name: register the first file
+  - name: "register the first file {{ ssl_cert_current_location }}/cert.pem"
     stat:
       path: "{{ ssl_cert_current_location }}/cert.pem"
       checksum: sha1
