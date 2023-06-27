@@ -14,7 +14,7 @@
         name: "variable_holder"
         file_changed:  "{{ diff.rc }}"
     - debug:
-        msg: {{diff.rc}}
+        msg: "{{diff.rc}}"
         
     - name: The file has not changed. Ending 1st part of playbook
       meta: end_play
