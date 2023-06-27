@@ -25,7 +25,7 @@
     ignore_errors: true
 
   - meta: end_play
-    when: file_1_checksum.stat.checksum == file_2_checksum.stat.checksum
+    when: file_1_checksum.stat.checksum != file_2_checksum.stat.checksum
 
 - hosts: target
 
