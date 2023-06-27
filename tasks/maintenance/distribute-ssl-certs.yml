@@ -9,10 +9,15 @@
       register: diff
       failed_when: diff.rc not in [ 0, 1 ]
 
-    - name: "Setting variable"
+    - name: "The files have not changed"
       set_fact: 
         files_changed: "no"
       when: diff.stdout_lines == "[]"
+
+    - name: "The files have changed"
+      set_fact: 
+        files_changed: "yes"
+      when: diff.stdout_lines != "[]"
       
     - debug:
         var: diff.stdout_lines
@@ -23,7 +28,7 @@
   tasks:
 
     - meta: end_play
-      when: files_changed == "no"
+      when: hostvars['192.168.10.102']['file_changed'] == "no"
     
     - name: Going through all targets
       shell: "ls"
