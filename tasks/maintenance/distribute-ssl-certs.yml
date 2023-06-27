@@ -4,25 +4,25 @@
   become: yes
   tasks:
 
-   - name: register the first file
-      stat:
-        path: "{{ ssl_cert_current_location }}/cert.pem"
-        checksum: sha1
-        get_checksum: yes
-      register: file_1_checksum
+  - name: register the first file
+    stat:
+      path: "{{ ssl_cert_current_location }}/cert.pem"
+      checksum: sha1
+      get_checksum: yes
+    register: file_1_checksum
   
-    - name: register the second file
-      stat:
-        path: "{{ ssl_cert_archive_location }}/cert.pem"
-        checksum: sha1
-        get_checksum: yes
-      register: file_2_checksum
-  
-    - name: Check if the files are the same
-      register: file_changed
-      debug: msg="The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
-      failed_when: file_1_checksum.stat.checksum != file_2_checksum.stat.checksum
-      ignore_errors: true
+  - name: register the second file
+    stat:
+      path: "{{ ssl_cert_archive_location }}/cert.pem"
+      checksum: sha1
+      get_checksum: yes
+    register: file_2_checksum
+
+  - name: Check if the files are the same
+    register: file_changed
+    debug: msg="The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
+    failed_when: file_1_checksum.stat.checksum != file_2_checksum.stat.checksum
+    ignore_errors: true
 
 - hosts: target
 
