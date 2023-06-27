@@ -40,8 +40,8 @@
         msg: "{{ file_changed }}"
         
     - meta: end_play
-      when: file_changed == "yes"
+      when: file_changed == "no"
     
     - name: Going through all targets
       shell: "ls"
-      when: file_changed == "true"
+      when: file_changed == "yes"
