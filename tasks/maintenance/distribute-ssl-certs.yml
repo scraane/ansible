@@ -9,23 +9,25 @@
       register: diff
       failed_when: diff.rc not in [ 0, 1 ]
 
-    - name: "The files have not changed"
-      set_fact: 
-        file_changed: "false"
-      when: diff.rc not in [ 1 ]
-
-    - name: "The files have changed"
-      set_fact: 
-        file_changed: "true"
+    - name: The file has not changed. Ending 1st part of playbook
+      meta: end_play
       when: diff.rc not in [ 0 ]
-      
-    - debug:
-        var: diff.stdout_lines
-    
-    - name: add variables to dummy host
+
+    - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
-        shared_variable:  "{{ diff.rc }}"
+        file_changed:  "{{ diff.rc }}"
+
+    - name: Copy content of file to variable
+      vars:
+         cert_pem: "{{ lookup('file', '{{ ssl_cert_current_location }}/cert.pem') }}"
+      when: diff.rc not in [ 1 ]
+
+    - name: Setting variable to dummy host for further processing
+      add_host:
+        name: "variable_holder"
+        cert_pem:  "{{ cert_pem }}"
+      when: diff.rc not in [ 1 ]
 
   
 - hosts: target
@@ -33,11 +35,13 @@
   become: yes
 
   vars:
-    file_changed: "{{ hostvars['variable_holder']['shared_variable'] }}"
+    file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
+    cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
     
   tasks:
     - debug:
         msg: "{{ file_changed }}"
+        msg: "{{ cert_pem }}"
         
     - name: The file has not changed. Ending playbook
       meta: end_play
