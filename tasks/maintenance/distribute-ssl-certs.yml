@@ -11,12 +11,12 @@
 
     - name: "The files have not changed"
       set_fact: 
-        file_changed: "no"
+        file_changed: "yes"
       when: diff.stdout_lines == "[]"
 
     - name: "The files have changed"
       set_fact: 
-        file_changed: "yes"
+        file_changed: "no"
       when: diff.stdout_lines != "[]"
       
     - debug:
