@@ -69,7 +69,7 @@
       when: file_changed == "0"
 
     - name: Set the rest of the Vars
-      vars:
+      set_facts:
         cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
         privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
         chain_pem: "{{ hostvars['variable_holder']['chin_pem'] }}"
