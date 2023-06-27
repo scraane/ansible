@@ -4,30 +4,14 @@
   become: yes
   tasks:
 
-  - name: "register the first file {{ ssl_cert_current_location }}/cert.pem"
-    stat:
-      path: "{{ ssl_cert_archive_location }}/cert.pem"
-      checksum: sha1
-      get_checksum: yes
-    register: file_1
+
+  - shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
+    register: diff
+    failed_when: diff.rc not in [ 0, 1 ]
+
+  - debug:
+    var: diff.stdout_lines
   
-  - name: "register the second file {{ ssl_cert_archive_location }}/cert.pem"
-    stat:
-      path: "{{ ssl_cert_archive_location }}/cert.pem"
-      checksum: sha1
-      get_checksum: yes
-    register: file_2
-
-  - debug:
-      var: file_1.stat.checksum
-
-  - debug:
-      var: file_2.stat.checksum
-
-  - name: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
-    register: files_same
-    changed_when: file_1.stat.checksum == file_2.stat.checksum
-
 - hosts: target
 
   become: yes
