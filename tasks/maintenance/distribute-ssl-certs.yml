@@ -26,7 +26,7 @@
 
   - name: "The {{ ssl_cert_current_location }}/cert.pem and {{ ssl_cert_archive_location }}/cert.pem are identical"
     meta: end_play
-    when: file_1.stat.checksum == file_2.stat.checksum
+    failed_when: file_1.stat.checksum == file_2.stat.checksum
 
 - hosts: target
 
