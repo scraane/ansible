@@ -18,28 +18,15 @@
         name: "variable_holder"
         file_changed:  "{{ diff.rc }}"
 
-    - name: Copy content of cert.pem to variable
+    - name: Copy content of {{ item.File }} to variable
       slurp:
-         src: "{{ ssl_cert_current_location }}/cert.pem"
-      register: cert_pem
-      when: diff.rc == 1
-
-    - name: Copy content of privkey.pem to variable
-      slurp:
-         src: "{{ ssl_cert_current_location }}/privkey.pem"
-      register: privkey_pem
-      when: diff.rc == 1
-
-    - name: Copy content of chain.pem to variable
-      slurp:
-         src: "{{ ssl_cert_current_location }}/chain.pem"
-      register: chain_pem
-      when: diff.rc == 1
-
-    - name: Copy content of fullchain.pem to variable
-      slurp:
-         src: "{{ ssl_cert_current_location }}/fullchain.pem"
-      register: fullchain_pem
+         src: '{{ item.File }}'
+      register: '{{ item.Var }}'
+      with_items:
+        - {Var:'cert_pem', File: '{{ ssl_cert_current_location }}/cert.pem'}
+        - {Var:'privkey_pem', File: '{{ ssl_cert_current_location }}/privkey.pem'}
+        - {Var:'chain_pem', File: '{{ ssl_cert_current_location }}/chain.pem'}
+        - {Var:'fullchain_pem', File: '{{ ssl_cert_current_location }}/fullchain.pem'}
       when: diff.rc == 1
 
     - name: Setting variable to dummy host for further processing
