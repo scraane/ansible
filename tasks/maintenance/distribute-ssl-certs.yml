@@ -25,7 +25,7 @@
     - name: add variables to dummy host
       add_host:
         name: "variable_holder"
-        shared_variable:  "{{ file_changed }}"
+        shared_variable:  "{{ diff.rc }}"
 
   
 - hosts: target
@@ -41,8 +41,8 @@
         
     - name: The file has not changed. Ending playbook
       meta: end_play
-      when: file_changed == false
+      when: file_changed == 0
     
     - name: Going through all targets
       shell: "ls"
-      when: file_changed == true
+      when: file_changed == 1
