@@ -11,12 +11,12 @@
 
     - name: "The files have not changed"
       set_fact: 
-        file_changed: "true"
-      when: diff.stdout_lines == "[]"
+        file_changed: "false"
+      when: diff.stdout_lines == ""
 
     - name: "The files have changed"
       set_fact: 
-        file_changed: "false"
+        file_changed: "true"
       when: diff.stdout_lines != "[]"
       
     - debug:
@@ -39,7 +39,8 @@
     - debug:
         msg: "{{ file_changed }}"
         
-    - meta: end_play
+    - name: The file has not changed. Ending playbook
+      meta: end_play
       when: file_changed == false
     
     - name: Going through all targets
