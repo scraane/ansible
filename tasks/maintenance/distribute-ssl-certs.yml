@@ -4,7 +4,8 @@
   become: yes
   tasks:
 
-    - shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
+    - name: "Comparing {{ ssl_cert_current_location }}/cert.pem with {{ ssl_cert_archive_location }}/cert.pem"
+      shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}/cert.pem
       register: diff
       failed_when: diff.rc not in [ 0, 1 ]
   
@@ -17,7 +18,7 @@
   tasks:
 
     - meta: end_play
-      when: file_1.stat.checksum == file_2.stat.checksum
+      when: diff.stdout_lines == ""
     
     - name: Going through all targets
       shell: "ls"
