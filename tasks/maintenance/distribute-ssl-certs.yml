@@ -67,7 +67,7 @@
     
   tasks:
     - debug:
-        msg: "{{ file_changed }}"
+        msg: "{{ cert_pem }}"
         
     - name: The file has not changed. Ending playbook
       meta: end_play
