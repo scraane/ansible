@@ -20,6 +20,11 @@
       meta: end_play
       when: diff.rc == 0
 
+    - name: Remove old compair cert
+      file:
+        path: /root/ssl_archive/cert.pem
+        state: absent
+
     - name: Copy cert to compare location for next time
       shell: cp {{ ssl_cert_current_location }}/cert.pem /root/ssl_archive/
       register: cp
@@ -80,6 +85,16 @@
         chain_pem: "{{ hostvars['variable_holder']['chain_pem'] }}"
         fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
       when: file_changed == "1"
+
+    - name: Remove old private key
+      file:
+        path: "{{ ssl_cert_pve_location }}/pveproxy-ssl.key"
+        state: absent
+
+    - name: Remove old fullchain cert
+      file:
+        path: "{{ ssl_cert_pve_location }}/pveproxy-ssl.pem"
+        state: absent
     
     - name: Saving PVE private key
       copy:
