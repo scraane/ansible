@@ -22,11 +22,11 @@
 
     - name: Remove old compair cert
       file:
-        path: /root/ssl_archive/cert.pem
+        path: {{ ssl_cert_archive_location }}
         state: absent
 
     - name: Copy cert to compare location for next time
-      shell: cp {{ ssl_cert_current_location }}/cert.pem /root/ssl_archive/
+      shell: cp {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}
       register: cp
       failed_when: cp.rc not in [ 0, 1 ]
       when: diff.rc == 1
