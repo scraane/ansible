@@ -22,7 +22,7 @@
 
     - name: Remove old compair cert
       file:
-        path: {{ ssl_cert_archive_location }}
+        path: "{{ ssl_cert_archive_location }}"
         state: absent
 
     - name: Copy cert to compare location for next time
