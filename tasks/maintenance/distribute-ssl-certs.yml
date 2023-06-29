@@ -82,8 +82,10 @@
         dest: "{{ ssl_cert_target_cert }}"
       when: file_changed == "1"
 
-    - name: Restarting pve proxy
-      shell: pveproxy restart
+    - name: Restart service {{ service_to_restart }}
+      service:
+        name: {{ service_to_restart }}
+        state: restarted
       when: file_changed == "1"
     
     - name: Get PVE Proxy status
