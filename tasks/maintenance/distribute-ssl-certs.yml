@@ -30,23 +30,11 @@
       register: cp
       failed_when: cp.rc not in [ 0, 1 ]
       when: diff.rc == 1
-    
-    - name: Copy content of {{ ssl_cert_current_location }}/cert.pem to variable
-      slurp:
-         src: '{{ ssl_cert_current_location }}/cert.pem'
-      register: cert_pem
-      when: diff.rc == 1
 
     - name: Copy content of {{ ssl_cert_current_location }}/privkey.pem to variable
       slurp:
          src: '{{ ssl_cert_current_location }}/privkey.pem'
       register: privkey_pem
-      when: diff.rc == 1
-      
-    - name: Copy content of {{ ssl_cert_current_location }}/chain.pem to variable
-      slurp:
-         src: '{{ ssl_cert_current_location }}/chain.pem'
-      register: chain_pem
       when: diff.rc == 1
       
     - name: Copy content of {{ ssl_cert_current_location }}/fullchain.pem to variable
@@ -58,9 +46,7 @@
     - name: Setting variable to dummy host for further processing
       add_host:
         name: "variable_holder"
-        cert_pem:  "{{ cert_pem.content | b64decode }}"
         privkey_pem: "{{ privkey_pem.content | b64decode }}"
-        chain_pem: "{{ chain_pem.content | b64decode }}"
         fullchain_pem: "{{ fullchain_pem.content | b64decode }}"
       no_log: true
       when: diff.rc == 1
@@ -80,9 +66,7 @@
 
     - name: Set the rest of the Vars
       set_fact:
-        cert_pem: "{{ hostvars['variable_holder']['cert_pem'] }}"
         privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
-        chain_pem: "{{ hostvars['variable_holder']['chain_pem'] }}"
         fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
       when: file_changed == "1"
 
@@ -99,13 +83,13 @@
     - name: Saving PVE private key
       copy:
         content: "{{ privkey_pem }}"
-        dest: "{{ ssl_cert_pve_location }}/pveproxy-ssl.key"
+        dest: "{{ ssl_cert_target_privkey }}"
       when: file_changed == "1"
 
     - name: Saving PVE fullchain cert
       copy:
         content: "{{ fullchain_pem }}"
-        dest: "{{ ssl_cert_pve_location }}/pveproxy-ssl.pem"
+        dest: "{{ ssl_cert_target_cert }}"
       when: file_changed == "1"
 
     - name: Restarting pve proxy
@@ -114,11 +98,11 @@
     
     - name: Get PVE Proxy status
       ansible.builtin.systemd:
-        name: "pveproxy"
-      register: pveproxy_status
+        name: "{{ service_to_restart }}"
+      register: service_status
     
     - debug:
-        var: pveproxy_status.status.ActiveState
+        var: service_status.status.ActiveState
     
     - name: Send Telegram message since certificates are updated
       telegram:
