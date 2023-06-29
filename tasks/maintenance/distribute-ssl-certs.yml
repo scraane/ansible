@@ -72,12 +72,12 @@
 
     - name: Remove old private key
       file:
-        path: "{{ ssl_cert_pve_location }}/pveproxy-ssl.key"
+        path: "{{ ssl_cert_target_privkey }}"
         state: absent
 
     - name: Remove old fullchain cert
       file:
-        path: "{{ ssl_cert_pve_location }}/pveproxy-ssl.pem"
+        path: "{{ ssl_cert_target_cert }}"
         state: absent
     
     - name: Saving PVE private key
