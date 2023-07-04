@@ -1,0 +1,238 @@
+---
+- hosts: all
+
+  become: yes
+  tasks:
+    - name: update apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+        
+    - name: Check/Install default packages
+      apt:
+        name: 
+          - htop
+          - wget
+          - curl
+          - sudo
+          - neofetch
+          - git
+          - python-is-python3
+        state: present
+        update_cache: true
+      become: true
+      
+    - name: Install bind
+      apt:
+        name: 
+          - bind
+        state: present
+        update_cache: true
+      become: true
+      
+    - name: Add user scraane to bind group
+      user: name=scraane
+            groups=bind
+            append=yes
+
+    - name: Change file ownership, group and permissions
+      file:
+        path: '{{ item }}'
+        owner: "bind"
+        group: "bind"
+        mode: '0775'
+        recurse: yes
+        state: directory
+        with_items:
+          - /var/bind
+          - /etc/bind
+          - /var/run/named
+          - /var/cache/bind
+
+    - name: Make changes to apache available sites file 000-default.conf
+      lineinfile: 
+        path: /etc/apache2/sites-available/000-default.conf
+        backup: yes
+        regexp: 'DocumentRoot /var/www/html'
+        line: '   DocumentRoot /var/www/html/snipeit/public'
+        state: present  
+
+    - name: Make changes to apache available sites file default-ssl.conf
+      lineinfile: 
+        path: /etc/apache2/sites-available/default-ssl.conf
+        backup: yes
+        regexp: 'DocumentRoot /var/www/html'
+        line: '   DocumentRoot /var/www/html/snipeit/public'
+        state: present  
+        
+    - name: Add directives for mod_rewrite
+      blockinfile:
+        path: /etc/apache2/sites-available/000-default.conf
+        insertbefore: '   DocumentRoot /var/www/html/snipeit/public'
+        block: |
+          <Directory /var/www/html/snipeit/public>
+            Allow From All
+            AllowOverride All
+            Options -Indexes
+          </Directory>
+          ServerName {{ snipeit_install_hostname }}
+          
+    - name: Enable mod_rewrite in Apache
+      community.general.apache2_module:
+        state: present
+        name: rewrite
+        
+    - name: Restart service apache2
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
+
+    - name: create random but idempotent password
+      set_fact:
+        mysql_password: "{{ lookup('ansible.builtin.password', '/dev/null', seed=inventory_hostname, chars=['ascii_letters', 'digits']) }}"
+
+    - name: Remove anonymous access to mysql
+      community.mysql.mysql_user:
+        name: ''
+        host_all: true
+        state: absent
+        
+    - name: "Create new databases with {{ snipeit_install_dbname }}"
+      community.mysql.mysql_db:
+        name: "{{ snipeit_install_dbname }}"
+        state: present
+    
+    - name: "Create database user with name {{ snipeit_install_dbusername }} with all database privileges"
+      community.mysql.mysql_user:
+        name: "{{ snipeit_install_dbusername }}"
+        password: "{{ mysql_password }}"
+        priv: '{{ snipeit_install_dbname }}.*:ALL'
+        state: present
+  
+    - name: Clone Snipe-IT Git repo
+      git:
+        repo: https://github.com/snipe/snipe-it
+        dest: /var/www/html/snipeit
+        single_branch: yes    
+        version: master
+
+    - name: Copy example .env file to .env
+      shell: "cp /var/www/html/snipeit/.env.example /var/www/html/snipeit/.env"
+        
+    - name: Make changes to .env file
+      lineinfile:
+        path: /var/www/html/snipeit/.env
+        backup: no
+        regexp: '{{item.From}}'
+        line: '{{item.To}}'
+        state: present  
+      with_items:
+       - { From: '^APP_ENV=', To: 'APP_ENV=production'}
+       - { From: '^APP_URL=', To: 'APP_URL={{ snipeit_install_protocol }}://{{ snipeit_install_hostname }}'}
+       - { From: '^APP_TIMEZONE=', To: 'APP_TIMEZONE={{ snipeit_install_timezone }}'}
+       - { From: '^DB_CONNECTION=', To: 'DB_CONNECTION=mysql'}
+       - { From: '^DB_HOST=', To: 'DB_HOST={{ snipeit_install_dbhost }}'}
+       - { From: '^DB_DATABASE=', To: 'DB_DATABASE={{ snipeit_install_dbname }}'}
+       - { From: '^DB_USERNAME=', To: 'DB_USERNAME={{ snipeit_install_dbusername }}'}
+       - { From: '^DB_PASSWORD=', To: 'DB_PASSWORD={{ mysql_password }}'}
+       - { From: '^APP_TRUSTED_PROXIES=', To: 'APP_TRUSTED_PROXIES={{ snipeit_install_proxy }}'}
+       - { From: '^DB_PREFIX=', To: 'DB_PREFIX={{ snipeit_install_dbprefix }}'}
+       - { From: '^MAIL_DRIVER=', To: 'MAIL_DRIVER={{ snipeit_install_maildriver }}'}
+       - { From: '^MAIL_HOST=', To: 'MAIL_HOST={{ snipeit_install_mailhost }}'}
+       - { From: '^MAIL_USERNAME=', To: 'MAIL_USERNAME={{ snipeit_install_mailusername }}'}
+       - { From: '^MAIL_PASSWORD=', To: 'MAIL_PASSWORD={{ snipeit_install_mailpassword }}'}
+       - { From: '^MAIL_ENCRYPTION=', To: 'MAIL_ENCRYPTION={{ snipeit_install_mailencryption }}'}
+       - { From: '^MAIL_FROM_ADDR=', To: 'MAIL_FROM_ADDR={{ snipeit_install_mailfromaddr }}'}
+       - { From: '^MAIL_FROM_NAME=', To: 'MAIL_FROM_NAME={{ snipeit_install_mailfromname }}'}
+       - { From: '^MAIL_REPLYTO_ADDR=', To: 'MAIL_REPLYTO_ADDR={{ snipeit_install_mailreplytoaddr }}'}
+       - { From: '^MAIL_REPLYTO_NAME=', To: 'MAIL_REPLYTO_NAME={{ snipeit_install_mailreplytoname }}'}
+       - { From: '^MAIL_AUTO_EMBED=', To: 'MAIL_AUTO_EMBED={{ snipeit_install_mailautoembed }}'}
+       - { From: '^MAIL_AUTO_EMBED_METHOD=', To: 'MAIL_AUTO_EMBED_METHOD={{ snipeit_install_mailautoembedmethof }}'}
+       - { From: '^IMAGE_LIB=', To: 'IMAGE_LIB={{ snipeit_install_imagelib }}'}
+       
+    - name: Change file ownership, group and permissions
+      file:
+        path: '/var/www/html/snipeit/'
+        owner: "www-data"
+        group: "www-data"
+        mode: '0775'
+        recurse: yes
+        state: directory
+        
+    - name: Download and install Composer
+      shell: curl -sS https://getcomposer.org/installer | php
+      args:
+        chdir: /usr/src/
+        creates: /usr/local/bin/composer
+        warn: false
+
+    - name: Add Composer to global path
+      copy: 
+        dest: /usr/local/bin/composer
+        group: root
+        mode: '0755'
+        owner: root
+        src: /usr/src/composer.phar
+        remote_src: yes
+     
+    - name: Set composer token
+      become: yes
+      become_user: snipeit
+      composer:
+        command: config
+        arguments: github-oauth.github.com {{ snipeit_install_github_accesstoken }}
+        global_command: true
+      environment:
+        COMPOSER_NO_INTERACTION: "1"   
+        COMPOSER_ALLOW_SUPERUSER: "1"   
+      
+    - name: Update composer
+      become: yes
+      become_user: scraane
+      composer:
+        command: update
+        working_dir: /var/www/html/snipeit
+      environment:
+        COMPOSER_NO_INTERACTION: "1"   
+        COMPOSER_ALLOW_SUPERUSER: "1"
+
+    - name: Install dependecies with composer 
+      become: yes
+      become_user: scraane
+      composer:
+        command: install
+        working_dir: /var/www/html/snipeit
+      environment:
+        COMPOSER_NO_INTERACTION: "1"   
+        COMPOSER_ALLOW_SUPERUSER: "1"
+
+    - name: Generate APP_KEY
+      register: ps
+      shell: "cd /var/www/html/snipeit && yes | php artisan key:generate"
+      
+    - debug: var=ps.stdout_lines
+    
+    - name: add path to git safe directory
+      copy:
+        dest: '/home/scraane/.gitconfig'
+        owner: scraane
+        group: sudo
+        content: |
+          [safe]
+                directory = /var/www/html/snipeit
+                
+    - name: create laravel log file
+      file:
+        path: /var/www/html/snipeit/storage/logs/laravel.log
+        state: touch
+
+    - name: Change file ownership, group and permissions
+      file:
+        path: '/var/www/html/snipeit/'
+        owner: "www-data"
+        group: "www-data"
+        mode: '0775'
+        recurse: yes
+        state: directory
