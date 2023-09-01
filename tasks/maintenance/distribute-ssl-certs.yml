@@ -4,22 +4,6 @@
   become: yes
   tasks:
 
-    - name: "Comparing {{ ssl_cert_current_location }}/cert.pem with {{ ssl_cert_archive_location }}"
-      shell: diff {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}
-      register: diff
-      failed_when: diff.rc not in [ 0, 1 ]
-      
-    - name: Setting variable to dummy host for further processing
-      add_host:
-        name: "variable_holder"
-        file_changed:  "{{ diff.rc }}"
-    - debug:
-        msg: "{{diff.rc}}"
-        
-    - name: The file has not changed. Ending 1st part of playbook
-      meta: end_play
-      when: diff.rc == 0
-
     - name: Remove old compair cert
       file:
         path: "{{ ssl_cert_archive_location }}"
@@ -29,19 +13,16 @@
       shell: cp {{ ssl_cert_current_location }}/cert.pem {{ ssl_cert_archive_location }}
       register: cp
       failed_when: cp.rc not in [ 0, 1 ]
-      when: diff.rc == 1
 
     - name: Copy content of {{ ssl_cert_current_location }}/privkey.pem to variable
       slurp:
          src: '{{ ssl_cert_current_location }}/privkey.pem'
       register: privkey_pem
-      when: diff.rc == 1
       
     - name: Copy content of {{ ssl_cert_current_location }}/fullchain.pem to variable
       slurp:
          src: '{{ ssl_cert_current_location }}/fullchain.pem'
       register: fullchain_pem
-      when: diff.rc == 1
 
     - name: Setting variable to dummy host for further processing
       add_host:
@@ -49,44 +30,32 @@
         privkey_pem: "{{ privkey_pem.content | b64decode }}"
         fullchain_pem: "{{ fullchain_pem.content | b64decode }}"
       no_log: true
-      when: diff.rc == 1
   
 - hosts: target
 
   become: yes
 
-  vars:
-    file_changed: "{{ hostvars['variable_holder']['file_changed'] }}"
-    
   tasks:
-       
-    - name: If the file has not changed we will end the playbook
-      meta: end_play
-      when: file_changed == "0"
 
     - name: Set the rest of the Vars
       set_fact:
         privkey_pem: "{{ hostvars['variable_holder']['privkey_pem'] }}"
         fullchain_pem: "{{ hostvars['variable_holder']['fullchain_pem'] }}"
-      when: file_changed == "1"
 
     - name: Saving PVE private key
       copy:
         content: "{{ privkey_pem }}"
         dest: "{{ ssl_cert_target_privkey }}"
-      when: file_changed == "1"
 
     - name: Saving PVE fullchain cert
       copy:
         content: "{{ fullchain_pem }}"
         dest: "{{ ssl_cert_target_cert }}"
-      when: file_changed == "1"
 
     - name: "Restart service {{ service_to_restart }}"
       service:
         name: "{{ service_to_restart }}"
         state: restarted
-      when: file_changed == "1"
     
     - name: Get PVE Proxy status
       ansible.builtin.systemd:
