@@ -62,6 +62,7 @@
         line: '{{item.To}}'
         state: present  
       with_items:
+       - { From: '^Port', To: 'Port {{ ssh_port }}'}
        - { From: '^PermitRootLogin yes', To: 'PermitRootLogin no'}
        - { From: '^#PubkeyAuthentication', To: 'PubkeyAuthentication yes'}
        - { From: '^#PasswordAuthentication', To: 'PasswordAuthentication no'}
