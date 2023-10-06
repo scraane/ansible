@@ -47,6 +47,30 @@
         user: "{{ newuser_username }}"
         state: present
         key: "{{ newuser_pubkey_url }}"
+
+    - name: base | add user | {{ newuser_username }}
+      user:
+        name: "{{ update_username }}"
+        comment: "{{ update_comment }}"
+        group: "{{ update_group }}"
+        password: "{{ update_password }}"
+        shell: /bin/bash
+        update_password: on_create
+        
+    - name: Create the .ssh directory
+      file:
+        path: "~/.ssh"
+        state: directory
+      become: true
+      become_method: sudo
+      become_user: "{{ update_username }}"
+      
+    - name: Set authorized keys taken from url
+      ansible.posix.authorized_key:
+        user: "{{ update_username }}"
+        state: present
+        key: "{{ update_pubkey_url }}"
+
   
     - name: Set timezone to {{ newserver_tz }}
       timezone:
