@@ -38,7 +38,7 @@
       user:
         name: "scraane"
         group: "sudo"
-        password: "{{ scraane_password }}"
+        password: "{{ scraane_password | password_hash('sha512')}}"
         shell: /bin/bash
         update_password: on_create
         
@@ -60,7 +60,7 @@
       user:
         name: "update-user"
         group: "sudo"
-        password: "{{ update-user_password }}"
+        password: "{{ update-user_password | password_hash('sha512')}}"
         shell: /bin/bash
         update_password: on_create
         
