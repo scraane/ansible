@@ -10,7 +10,7 @@
         autoclean: yes
         autoremove: yes
         
-    - name: htop | wget | curl | sudo | neofetch
+    - name: htop | wget | curl | sudo | neofetch | nala
       apt:
         name: 
           - htop
@@ -18,18 +18,26 @@
           - curl
           - sudo
           - neofetch
+          - nala
         state: present
         update_cache: true
       become: true
       
     - name: base | neofetch | add to motd
       shell: echo "echo" > /etc/profile.d/mymotd.sh && echo "neofetch" >> /etc/profile.d/mymotd.sh && chmod +x /etc/profile.d/mymotd.sh   
+
+    - name: base | nala | add nala fetch to cron
+      ansible.builtin.cron:
+        name: "nala fetch"
+        special_time: "weekly"
+        job: "nala fetch --auto -y"
+        user: root
+      become: true
       
-    - name: base | add user | {{ newuser_username }}
+    - name: base | add user | scraane
       user:
-        name: "{{ newuser_username }}"
-        comment: "{{ newuser_comment }}"
-        group: "{{ newuser_group }}"
+        name: "scraane"
+        group: "sudo"
         password: "{{ newuser_password }}"
         shell: /bin/bash
         update_password: on_create
@@ -40,19 +48,18 @@
         state: directory
       become: true
       become_method: sudo
-      become_user: "{{ newuser_username }}"
+      become_user: "scraane"
       
     - name: Set authorized keys taken from url
       ansible.posix.authorized_key:
-        user: "{{ newuser_username }}"
+        user: "scraane"
         state: present
-        key: "{{ newuser_pubkey_url }}"
+        key: "https://raw.githubusercontent.com/scraane/ansible/master/keys/scraane_id_rsa.pub"
 
-    - name: base | add user | {{ newuser_username }}
+    - name: base | add user | update-user
       user:
-        name: "{{ update_username }}"
-        comment: "{{ update_comment }}"
-        group: "{{ update_group }}"
+        name: "update-user"
+        group: "sudo"
         password: "{{ update_password }}"
         shell: /bin/bash
         update_password: on_create
@@ -63,18 +70,18 @@
         state: directory
       become: true
       become_method: sudo
-      become_user: "{{ update_username }}"
+      become_user: "update-user"
       
     - name: Set authorized keys taken from url
       ansible.posix.authorized_key:
-        user: "{{ update_username }}"
+        user: "update-user"
         state: present
-        key: "{{ update_pubkey_url }}"
+        key: "https://raw.githubusercontent.com/scraane/ansible/master/keys/update_id_rsa.pub"
 
   
-    - name: Set timezone to {{ newserver_tz }}
+    - name: Set timezone to Europe/Amsterdam
       timezone:
-        name: "{{ newserver_tz }}"
+        name: "Europe/Amsterdam"
      
     - name: Disable root SSH login
       lineinfile:
